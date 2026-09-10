@@ -1,53 +1,166 @@
 # Skill Authoring Standard
 
-## Required structure
+## Purpose
+
+Skills should be focused, composable, predictable, and easy to review.
+
+## Required layout
 
 ```text
 .assistant/skills/<skill-name>/
-  SKILL.md
+└── SKILL.md
 ```
 
-Each `SKILL.md` begins with:
+## Required frontmatter
 
 ```yaml
 ---
 name: skill-name
-description: Clear description of what the skill does and when it should be used.
+description: Explain what the skill does and when it should be used.
 ---
 ```
 
-## Recommended sections
+The folder name and `name` value should match.
 
-- Goal
-- When to use
-- Workflow
-- Decision criteria
-- Guardrails
-- Edge cases
-- Output
+## Recommended structure
 
-Implementation skills should also include the execution contract.
+A skill should normally contain:
+
+```text
+Goal
+When to use
+Workflow
+Decision criteria
+Guardrails
+Edge cases
+Output
+```
+
+Implementation skills should also make the execution boundary explicit.
+
+## Scope rules
+
+### Workspace-wide behavior
+
+Do not repeat workspace-wide rules in every skill.
+
+Examples:
+
+- do not expose credentials
+- verify changing Databricks product behavior
+- customer-first architecture
+- default user-execution boundary
+
+These belong in:
+
+```text
+/Workspace/.assistant_workspace_instructions.md
+```
+
+### Repository-specific behavior
+
+Rules about contributing to this toolkit belong in:
+
+```text
+AGENTS.md
+```
+
+Examples:
+
+- directory conventions
+- source-of-truth rules
+- contribution practices
+- release expectations
+
+### Task-specific behavior
+
+Only workflow-specific rules belong in `SKILL.md`.
+
+Examples:
+
+- deterministic deduplication in Silver
+- benchmark questions for Genie Agent
+- business success criteria for PoCs
+- scan/shuffle/skew diagnosis for performance reviews
 
 ## Naming
 
-Prefer verbs or concrete workflow nouns:
-- `customer-discovery`
-- `source-ingestion`
-- `poc-design`
+Prefer concrete workflow names:
+
+```text
+customer-discovery
+solution-architecture
+synthetic-data-generator
+source-ingestion
+poc-design
+```
 
 Avoid vague names such as:
-- `helper`
-- `databricks-best-practices`
-- `general-sa`
 
-## Trigger quality
+```text
+helper
+general-databricks
+best-practices
+misc
+```
 
-Descriptions should be specific enough that Genie Code can distinguish adjacent skills.
+## Description quality
 
-## Maintainability
+Descriptions should help Genie Code distinguish adjacent skills.
 
-- keep one responsibility per skill
-- prefer links/references to duplicated text
-- add examples only when they improve behavior
-- remove outdated product facts promptly
-- use official documentation for changing capabilities
+A good description contains:
+
+- what the skill does
+- the type of problem it solves
+- when it should be invoked
+
+## Skill size
+
+Keep skills focused.
+
+If a skill becomes a large collection of unrelated workflows, split it.
+
+## Implementation skills
+
+Default lifecycle:
+
+```text
+UNDERSTAND
+→ DESIGN
+→ GENERATE CODE
+→ EXPLAIN
+→ STOP
+→ USER EXECUTES
+→ REVIEW RESULTS
+```
+
+Generated implementation should include:
+
+1. assumptions
+2. code
+3. expected result
+4. validation
+5. explicit stop point
+
+## Product-specific instructions
+
+For Databricks capabilities that can change:
+
+- verify current official documentation before merging
+- do not hard-code stale limits or unsupported APIs
+- avoid embedding customer-specific configuration
+- state version/cloud assumptions where relevant
+
+## Review checklist
+
+Before merge, verify:
+
+- frontmatter is valid
+- folder/name match
+- description is specific
+- workflow is coherent
+- guardrails are explicit
+- output is clear
+- execution boundary is preserved
+- no secrets/customer-confidential content is present
+- behavior does not duplicate another skill unnecessarily

@@ -1,39 +1,70 @@
 # Contributing
 
-This toolkit is intended to become a shared SA asset.
+This repository is intended to be a shared Solution Architect asset.
+
+## Source-of-truth rule
+
+**All durable changes originate in Git.**
+
+Do not maintain a separately evolved workspace copy.
+
+The active workspace skill directory:
+
+```text
+/Workspace/.assistant/skills/
+```
+
+is a published copy of reviewed Git content.
 
 ## Contribution workflow
 
-1. Create a branch from `main`.
-2. Add or update one focused skill or template.
-3. Test it against at least two representative prompts.
-4. Confirm it does not duplicate an existing skill.
-5. Confirm all product-specific claims are current.
-6. Open a pull request.
-7. Include examples of behavior before and after the change.
-8. Obtain review before promoting changes to shared workspace skills.
+1. branch from `main`
+2. edit or add focused skills/templates/docs
+3. test representative prompts
+4. verify current product behavior where relevant
+5. open a PR
+6. obtain peer review
+7. merge
+8. release/version
+9. promote reviewed skills with `scripts/promote_skills.sh`
+10. smoke test in a new Genie Code conversation
 
-## Skill review checklist
+## Do not commit
 
-A skill should:
-- have valid `name` and `description` frontmatter
-- be narrow enough to trigger predictably
-- state when it should and should not be used
-- have a clear workflow
-- include guardrails
-- specify outputs
-- state important edge cases
-- avoid unnecessary feature-first Databricks positioning
+Never commit:
+
+- customer-confidential prompts
+- customer datasets
+- credentials
+- access tokens
+- secrets
+- private keys
+- internal-only architecture details not approved for sharing
+- production identifiers that should remain private
+
+## Skill contribution checklist
+
+A new or changed skill should:
+
+- solve one focused workflow
+- have valid frontmatter
+- have a precise description
+- state workflow and guardrails
+- define outputs
 - preserve the user-execution boundary for implementation tasks
-- avoid customer-specific confidential information
+- avoid feature-first Databricks positioning
+- avoid duplicating workspace instructions or `AGENTS.md`
+- be tested with positive and negative prompts
 
-## Breaking changes
+## Workspace edits
 
-If a skill changes its expected outputs or role significantly:
-- note it in `CHANGELOG.md`
-- update dependent templates/examples
-- increment the repository version
+Do not use direct workspace edits as the normal development model.
 
-## Product freshness
+If an emergency workspace edit is necessary:
 
-For Databricks product capabilities, limits, APIs, networking, identity, security, or deployment patterns, validate against current official Databricks documentation before merging.
+1. document the change
+2. reproduce it in Git
+3. submit it through review
+4. re-promote from Git
+
+This prevents configuration drift.
