@@ -1,0 +1,109 @@
+{
+  "name": "databricks-sa-toolkit",
+  "version": "1.0.0",
+  "purpose": "Reusable Databricks Solution Architect Genie Code skill library",
+  "execution_model": "UNDERSTAND -> DESIGN -> GENERATE CODE -> EXPLAIN -> STOP -> USER EXECUTES -> REVIEW RESULTS",
+  "skills": [
+    {
+      "folder": "cloud-networking-review",
+      "name": "cloud-networking-review",
+      "description": "Review Databricks cloud networking and private-connectivity requirements including control/data plane boundaries, storage access, private endpoints, DNS, egress, firewall routing, and enterprise network integration."
+    },
+    {
+      "folder": "customer-discovery",
+      "name": "customer-discovery",
+      "description": "Turn an ambiguous customer problem into clear business objectives, stakeholders, functional requirements, non-functional requirements, data characteristics, assumptions, and high-value discovery questions before solution design."
+    },
+    {
+      "folder": "customer-meeting",
+      "name": "customer-meeting",
+      "description": "Prepare and structure a Databricks customer meeting such as discovery, architecture workshop, executive briefing, technical deep dive, security review, demo, PoC playback, or cost review."
+    },
+    {
+      "folder": "databricks-apps-integration",
+      "name": "databricks-apps-integration",
+      "description": "Design a Databricks App as a user-facing solution component, including user workflow, app resources, authentication/authorization assumptions, backend integration, deployment plan, and generated application code when appropriate."
+    },
+    {
+      "folder": "demo-storytelling",
+      "name": "demo-storytelling",
+      "description": "Design and rehearse a customer-facing Databricks prototype or product demonstration as a business story centered on personas, decisions, outcomes, architecture rationale, and next steps."
+    },
+    {
+      "folder": "genie-agent-integration",
+      "name": "genie-agent-integration",
+      "description": "Design a Databricks Genie Agent conversational analytics solution over governed data, including data-product readiness, business semantics, instructions, example questions, trusted logic, permissions, evaluation, and app/API integration when required."
+    },
+    {
+      "folder": "gold-analytical-modeling",
+      "name": "gold-analytical-modeling",
+      "description": "Design business-facing Gold facts, dimensions, aggregates, feature tables, or analytical data products with explicit grain, metric semantics, incremental behavior, and reconciliation, then generate SQL or PySpark code."
+    },
+    {
+      "folder": "persona-objection-handling",
+      "name": "persona-objection-handling",
+      "description": "Prepare or respond to customer objections and stakeholder challenges about Databricks architecture, cost, incumbent platforms, security, lock-in, scale, operations, adoption, or build-versus-buy."
+    },
+    {
+      "folder": "poc-design",
+      "name": "poc-design",
+      "description": "Design a focused Databricks proof of concept with a testable business hypothesis, narrow scope, measurable business and technical success criteria, dependencies, risks, and an explicit decision at completion."
+    },
+    {
+      "folder": "production-readiness-review",
+      "name": "production-readiness-review",
+      "description": "Assess whether a Databricks prototype or solution is ready for production across correctness, security, reliability, performance, cost, observability, CI/CD, recovery, ownership, and support."
+    },
+    {
+      "folder": "prototype-planner",
+      "name": "prototype-planner",
+      "description": "Plan the smallest credible Databricks prototype needed to validate a customer hypothesis, decide what must work live versus be precomputed, mocked, or architecture-only, and route to technical specialist skills."
+    },
+    {
+      "folder": "sa-engagement-orchestrator",
+      "name": "sa-engagement-orchestrator",
+      "description": "Plan an end-to-end Databricks Solutions Architect customer engagement across discovery, architecture, prototype, demo, PoC, review, and next steps. Use when the user wants a complete engagement plan rather than one narrow technical task."
+    },
+    {
+      "folder": "security-governance-review",
+      "name": "security-governance-review",
+      "description": "Review a Databricks solution for identity, authorization, Unity Catalog governance, data classification, lineage, secrets, auditability, isolation, regulatory requirements, and secure data or AI access."
+    },
+    {
+      "folder": "silver-canonicalization",
+      "name": "silver-canonicalization",
+      "description": "Design trusted canonical Silver datasets and generate deterministic cleansing, deduplication, correction, delete, referential-integrity, and late-data handling code with reconciliation checks."
+    },
+    {
+      "folder": "solution-architecture",
+      "name": "solution-architecture",
+      "description": "Translate clarified business and technical requirements into a defensible Databricks solution architecture across ingestion, storage, processing, governance, serving, cloud integration, operations, alternatives, and trade-offs."
+    },
+    {
+      "folder": "solution-bootstrap",
+      "name": "solution-bootstrap",
+      "description": "Generate a minimal reproducible Databricks project and environment setup for a prototype or implementation, including setup scripts, structure, fallbacks, and verification commands, without silently changing the workspace."
+    },
+    {
+      "folder": "source-ingestion",
+      "name": "source-ingestion",
+      "description": "Select the appropriate Databricks ingestion pattern for files, event streams, reference extracts, snapshots, or change feeds and generate implementation and validation code for user execution."
+    },
+    {
+      "folder": "synthetic-data-generator",
+      "name": "synthetic-data-generator",
+      "description": "Design realistic deterministic synthetic datasets and generate Python, PySpark, or SQL code for the user to execute for demos, functional validation, edge-case testing, or distributed Spark scale testing."
+    },
+    {
+      "folder": "validation-performance-review",
+      "name": "validation-performance-review",
+      "description": "Validate Databricks data-processing correctness, review AI-generated Spark or SQL code, and diagnose performance using query plans and runtime evidence before generating targeted fixes."
+    },
+    {
+      "folder": "value-mapping",
+      "name": "value-mapping",
+      "description": "Translate customer statements and pain points into business consequences, required capabilities, architecture decisions, Databricks positioning, measurable outcomes, and proof points."
+    }
+  ],
+  "skill_count": 20
+}

@@ -1,0 +1,25 @@
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Local Databricks/auth
+.databrickscfg
+.env
+.env.*
+!.env.example
+
+# Generated / local outputs
+dist/
+build/
+output/
+tmp/
