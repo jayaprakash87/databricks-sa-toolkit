@@ -9,6 +9,19 @@ New customer use case requiring multiple capabilities.
 ## Do not use when
 Problem clearly maps to one specialist skill.
 
+## Inputs
+* Customer business problem, use case description, or requirements
+* Existing data/platform context (if known)
+* Current pain points or desired outcomes
+
+## Outputs
+* Use case summary (outcome, user, decision/action, KPI)
+* Required skill list with reasons
+* Explicit exclusions (skills NOT needed and why)
+* Data readiness assessment
+* Proof strategy
+* Next step
+
 ## Method
 
 ### 1. Understand the problem
