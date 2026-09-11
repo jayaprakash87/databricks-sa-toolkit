@@ -1,109 +1,105 @@
 {
   "name": "databricks-sa-toolkit",
-  "version": "1.0.0",
-  "purpose": "Reusable Databricks Solution Architect Genie Code skill library",
-  "execution_model": "UNDERSTAND -> DESIGN -> GENERATE CODE -> EXPLAIN -> STOP -> USER EXECUTES -> REVIEW RESULTS",
+  "version": "2.1.0",
+  "description": "Use-case-first reusable Databricks Senior Solution Architect toolkit",
+  "canonical_skills_root": ".assistant/skills",
+  "promotion_default_target": "/Workspace/.assistant/skills/",
   "skills": [
     {
-      "folder": "cloud-networking-review",
-      "name": "cloud-networking-review",
-      "description": "Review Databricks cloud networking and private-connectivity requirements including control/data plane boundaries, storage access, private endpoints, DNS, egress, firewall routing, and enterprise network integration."
+      "name": "00-solution-orchestrator",
+      "path": ".assistant/skills/00-solution-orchestrator/SKILL.md",
+      "purpose": "Translate a business use case into the minimum viable set of solution capabilities and specialist skills."
     },
     {
-      "folder": "customer-discovery",
-      "name": "customer-discovery",
-      "description": "Turn an ambiguous customer problem into clear business objectives, stakeholders, functional requirements, non-functional requirements, data characteristics, assumptions, and high-value discovery questions before solution design."
+      "name": "01-business-problem-framing",
+      "path": ".assistant/skills/01-business-problem-framing/SKILL.md",
+      "purpose": "Convert a vague customer request into a measurable business problem and target user decision."
     },
     {
-      "folder": "customer-meeting",
-      "name": "customer-meeting",
-      "description": "Prepare and structure a Databricks customer meeting such as discovery, architecture workshop, executive briefing, technical deep dive, security review, demo, PoC playback, or cost review."
+      "name": "02-value-and-kpi-design",
+      "path": ".assistant/skills/02-value-and-kpi-design/SKILL.md",
+      "purpose": "Define how business value will be measured before solution design begins."
     },
     {
-      "folder": "databricks-apps-integration",
-      "name": "databricks-apps-integration",
-      "description": "Design a Databricks App as a user-facing solution component, including user workflow, app resources, authentication/authorization assumptions, backend integration, deployment plan, and generated application code when appropriate."
+      "name": "03-demo-and-meeting-design",
+      "path": ".assistant/skills/03-demo-and-meeting-design/SKILL.md",
+      "purpose": "Turn a validated use-case concept into a customer-facing meeting and demo experience."
     },
     {
-      "folder": "demo-storytelling",
-      "name": "demo-storytelling",
-      "description": "Design and rehearse a customer-facing Databricks prototype or product demonstration as a business story centered on personas, decisions, outcomes, architecture rationale, and next steps."
+      "name": "04-solution-architecture",
+      "path": ".assistant/skills/04-solution-architecture/SKILL.md",
+      "purpose": "Design the minimum architecture required to satisfy the use case while respecting the customer estate."
     },
     {
-      "folder": "genie-agent-integration",
-      "name": "genie-agent-integration",
-      "description": "Design a Databricks Genie Agent conversational analytics solution over governed data, including data-product readiness, business semantics, instructions, example questions, trusted logic, permissions, evaluation, and app/API integration when required."
+      "name": "05-data-source-assessment",
+      "path": ".assistant/skills/05-data-source-assessment/SKILL.md",
+      "purpose": "Determine what data actually exists, its fitness for the use case, and the minimum acquisition path."
     },
     {
-      "folder": "gold-analytical-modeling",
-      "name": "gold-analytical-modeling",
-      "description": "Design business-facing Gold facts, dimensions, aggregates, feature tables, or analytical data products with explicit grain, metric semantics, incremental behavior, and reconciliation, then generate SQL or PySpark code."
+      "name": "06-data-integration-cdc",
+      "path": ".assistant/skills/06-data-integration-cdc/SKILL.md",
+      "purpose": "Integrate changing operational data where freshness and change semantics matter."
     },
     {
-      "folder": "persona-objection-handling",
-      "name": "persona-objection-handling",
-      "description": "Prepare or respond to customer objections and stakeholder challenges about Databricks architecture, cost, incumbent platforms, security, lock-in, scale, operations, adoption, or build-versus-buy."
+      "name": "07-batch-data-engineering",
+      "path": ".assistant/skills/07-batch-data-engineering/SKILL.md",
+      "purpose": "Build reliable batch transformations and analytical data products when real-time processing is unnecessary."
     },
     {
-      "folder": "poc-design",
-      "name": "poc-design",
-      "description": "Design a focused Databricks proof of concept with a testable business hypothesis, narrow scope, measurable business and technical success criteria, dependencies, risks, and an explicit decision at completion."
+      "name": "08-streaming-realtime",
+      "path": ".assistant/skills/08-streaming-realtime/SKILL.md",
+      "purpose": "Design event-driven or low-latency processing for use cases where decision value decays with time."
     },
     {
-      "folder": "production-readiness-review",
-      "name": "production-readiness-review",
-      "description": "Assess whether a Databricks prototype or solution is ready for production across correctness, security, reliability, performance, cost, observability, CI/CD, recovery, ownership, and support."
+      "name": "09-governance-security",
+      "path": ".assistant/skills/09-governance-security/SKILL.md",
+      "purpose": "Apply governance, access, lineage, privacy, and security appropriate to the use case."
     },
     {
-      "folder": "prototype-planner",
-      "name": "prototype-planner",
-      "description": "Plan the smallest credible Databricks prototype needed to validate a customer hypothesis, decide what must work live versus be precomputed, mocked, or architecture-only, and route to technical specialist skills."
+      "name": "10-platform-interoperability",
+      "path": ".assistant/skills/10-platform-interoperability/SKILL.md",
+      "purpose": "Design coexistence between Databricks and customer platforms such as Fabric, Power BI, SAP, Snowflake, operational apps, or domain SaaS."
     },
     {
-      "folder": "sa-engagement-orchestrator",
-      "name": "sa-engagement-orchestrator",
-      "description": "Plan an end-to-end Databricks Solutions Architect customer engagement across discovery, architecture, prototype, demo, PoC, review, and next steps. Use when the user wants a complete engagement plan rather than one narrow technical task."
+      "name": "11-bi-semantic-analytics",
+      "path": ".assistant/skills/11-bi-semantic-analytics/SKILL.md",
+      "purpose": "Deliver governed metrics, exploration, dashboards, and semantic experiences when the core problem is analytical rather than predictive."
     },
     {
-      "folder": "security-governance-review",
-      "name": "security-governance-review",
-      "description": "Review a Databricks solution for identity, authorization, Unity Catalog governance, data classification, lineage, secrets, auditability, isolation, regulatory requirements, and secure data or AI access."
+      "name": "12-ml-predictive-optimization",
+      "path": ".assistant/skills/12-ml-predictive-optimization/SKILL.md",
+      "purpose": "Use machine learning only when prediction, ranking, recommendation, forecasting, causal inference, or optimization materially improves the decision."
     },
     {
-      "folder": "silver-canonicalization",
-      "name": "silver-canonicalization",
-      "description": "Design trusted canonical Silver datasets and generate deterministic cleansing, deduplication, correction, delete, referential-integrity, and late-data handling code with reconciliation checks."
+      "name": "13-genai-agents-rag",
+      "path": ".assistant/skills/13-genai-agents-rag/SKILL.md",
+      "purpose": "Design grounded generative AI experiences where language understanding, synthesis, reasoning, or tool-use is central."
     },
     {
-      "folder": "solution-architecture",
-      "name": "solution-architecture",
-      "description": "Translate clarified business and technical requirements into a defensible Databricks solution architecture across ingestion, storage, processing, governance, serving, cloud integration, operations, alternatives, and trade-offs."
+      "name": "14-data-sharing-cleanrooms",
+      "path": ".assistant/skills/14-data-sharing-cleanrooms/SKILL.md",
+      "purpose": "Enable governed collaboration across organizational or partner boundaries without unnecessary data duplication."
     },
     {
-      "folder": "solution-bootstrap",
-      "name": "solution-bootstrap",
-      "description": "Generate a minimal reproducible Databricks project and environment setup for a prototype or implementation, including setup scripts, structure, fallbacks, and verification commands, without silently changing the workspace."
+      "name": "15-operational-serving-apps",
+      "path": ".assistant/skills/15-operational-serving-apps/SKILL.md",
+      "purpose": "Deliver insights or AI outputs into an operational workflow rather than stopping at a table/model/dashboard."
     },
     {
-      "folder": "source-ingestion",
-      "name": "source-ingestion",
-      "description": "Select the appropriate Databricks ingestion pattern for files, event streams, reference extracts, snapshots, or change feeds and generate implementation and validation code for user execution."
+      "name": "16-observability-finops-performance",
+      "path": ".assistant/skills/16-observability-finops-performance/SKILL.md",
+      "purpose": "Ensure production workloads are reliable, performant, and economically efficient."
     },
     {
-      "folder": "synthetic-data-generator",
-      "name": "synthetic-data-generator",
-      "description": "Design realistic deterministic synthetic datasets and generate Python, PySpark, or SQL code for the user to execute for demos, functional validation, edge-case testing, or distributed Spark scale testing."
+      "name": "17-experimentation-value-realization",
+      "path": ".assistant/skills/17-experimentation-value-realization/SKILL.md",
+      "purpose": "Prove whether the solution changes business outcomes and quantify value credibly."
     },
     {
-      "folder": "validation-performance-review",
-      "name": "validation-performance-review",
-      "description": "Validate Databricks data-processing correctness, review AI-generated Spark or SQL code, and diagnose performance using query plans and runtime evidence before generating targeted fixes."
-    },
-    {
-      "folder": "value-mapping",
-      "name": "value-mapping",
-      "description": "Translate customer statements and pain points into business consequences, required capabilities, architecture decisions, Databricks positioning, measurable outcomes, and proof points."
+      "name": "18-demo-data-synthetic-assets",
+      "path": ".assistant/skills/18-demo-data-synthetic-assets/SKILL.md",
+      "purpose": "Create realistic, internally consistent demo data and artifacts when customer data is unavailable or unsuitable."
     }
   ],
-  "skill_count": 20
+  "entry_point": "00-solution-orchestrator"
 }

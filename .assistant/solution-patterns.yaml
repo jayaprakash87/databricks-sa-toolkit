@@ -1,0 +1,622 @@
+# Solution Pattern Routing
+# Machine-readable pattern definitions for orchestrator
+
+version: "2.1.0"
+description: "Reusable solution patterns for Databricks SA toolkit orchestration"
+
+patterns:
+  
+  bi-decision-intelligence:
+    name: "BI / Decision Intelligence"
+    purpose: "Enable business users to explore data, track KPIs, and make analytical decisions"
+    use_when:
+      - "Need governed metrics and semantic layer"
+      - "Dashboard or report consumption required"
+      - "Analytical exploration needed"
+      - "Business intelligence on curated data"
+    
+    do_not_use_when:
+      - "Problem requires prediction or ML"
+      - "Real-time sub-second latency required"
+      - "Natural language interaction is the primary interface"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "11-bi-semantic-analytics"
+    
+    conditional_skills:
+      - skill: "05-data-source-assessment"
+        condition: "Unknown data sources or quality"
+      - skill: "07-batch-data-engineering"
+        condition: "Transformation layer needed for BI"
+      - skill: "09-governance-security"
+        condition: "PII/sensitive data or row/column security"
+      - skill: "10-platform-interoperability"
+        condition: "Existing BI platform (Power BI, Tableau, etc.)"
+      - skill: "03-demo-and-meeting-design"
+        condition: "Customer demo required"
+      - skill: "17-experimentation-value-realization"
+        condition: "Need to prove BI adoption/value"
+    
+    usually_excluded_skills:
+      - skill: "06-data-integration-cdc"
+        reason: "Batch refresh usually sufficient for BI"
+      - skill: "08-streaming-realtime"
+        reason: "BI rarely requires sub-second latency"
+      - skill: "12-ml-predictive-optimization"
+        reason: "Pattern is analytical, not predictive"
+      - skill: "13-genai-agents-rag"
+        reason: "Traditional BI interface, not conversational"
+    
+    expected_outputs:
+      - "Semantic model or governed views"
+      - "Dashboard or report"
+      - "KPI definitions and measurement plan"
+    
+    typical_architecture: "Curated Data → BI Semantic Layer → Dashboard/Report"
+
+  predictive-ml:
+    name: "Predictive ML"
+    purpose: "Use machine learning to predict, rank, recommend, forecast, or optimize decisions"
+    use_when:
+      - "Business problem requires prediction"
+      - "Ranking or recommendation needed"
+      - "Forecasting future outcomes"
+      - "Optimization of resources, pricing, or allocation"
+      - "Rules or SQL insufficient"
+    
+    do_not_use_when:
+      - "Deterministic rules solve the problem"
+      - "Simple SQL aggregation sufficient"
+      - "No baseline to compare ML performance"
+      - "Action from prediction not defined"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "12-ml-predictive-optimization"
+      - "17-experimentation-value-realization"
+    
+    conditional_skills:
+      - skill: "05-data-source-assessment"
+        condition: "Unclear feature availability or quality"
+      - skill: "06-data-integration-cdc"
+        condition: "Fresh operational data needed for features"
+      - skill: "07-batch-data-engineering"
+        condition: "Feature engineering or batch scoring"
+      - skill: "08-streaming-realtime"
+        condition: "Real-time scoring required"
+      - skill: "09-governance-security"
+        condition: "Model governance or fairness requirements"
+      - skill: "11-bi-semantic-analytics"
+        condition: "ML insights need BI consumption"
+      - skill: "15-operational-serving-apps"
+        condition: "Predictions drive operational actions"
+      - skill: "16-observability-finops-performance"
+        condition: "Production deployment"
+      - skill: "18-demo-data-synthetic-assets"
+        condition: "Customer data unavailable for demo"
+    
+    usually_excluded_skills:
+      - skill: "13-genai-agents-rag"
+        reason: "Predictive ML, not generative AI"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Rarely needed for ML use cases"
+    
+    expected_outputs:
+      - "Trained model with baseline comparison"
+      - "Feature engineering pipeline"
+      - "Scoring mechanism (batch or real-time)"
+      - "Model monitoring and retraining plan"
+      - "Business lift measurement design"
+    
+    typical_architecture: "Features → Model Training → Model Registry → Scoring → Action/BI"
+
+  real-time-operational-intelligence:
+    name: "Real-Time Operational Intelligence"
+    purpose: "Enable sub-minute operational decisions where delay materially reduces value"
+    use_when:
+      - "Decision value decays with latency (seconds/minutes)"
+      - "Event-driven architecture required"
+      - "Operational alerts or actions need immediate triggers"
+      - "Real-time features needed for ML serving"
+    
+    do_not_use_when:
+      - "Batch latency (hours) is acceptable"
+      - "Real-time adds cost without business value"
+      - "Source systems don't support real-time capture"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "08-streaming-realtime"
+      - "15-operational-serving-apps"
+      - "16-observability-finops-performance"
+      - "17-experimentation-value-realization"
+    
+    conditional_skills:
+      - skill: "05-data-source-assessment"
+        condition: "Event source capability unclear"
+      - skill: "06-data-integration-cdc"
+        condition: "Operational database changes drive events"
+      - skill: "09-governance-security"
+        condition: "PII in event streams or access control"
+      - skill: "11-bi-semantic-analytics"
+        condition: "Real-time metrics need dashboards"
+      - skill: "12-ml-predictive-optimization"
+        condition: "Real-time ML scoring"
+    
+    usually_excluded_skills:
+      - skill: "07-batch-data-engineering"
+        reason: "Pattern emphasizes streaming"
+      - skill: "13-genai-agents-rag"
+        reason: "Rarely needed for operational intelligence"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Not typical for operational use cases"
+    
+    expected_outputs:
+      - "Event ingestion and processing pipeline"
+      - "Real-time features or aggregates"
+      - "Operational action integration"
+      - "Monitoring and alerting"
+      - "SLA and latency validation"
+    
+    typical_architecture: "Event Stream → Streaming Processing → Real-Time Features/Actions → Monitoring"
+
+  conversational-bi:
+    name: "Conversational BI"
+    purpose: "Natural language questions over curated governed tables (SQL generation)"
+    use_when:
+      - "Users want to ask analytical questions in natural language"
+      - "Curated governed tables with clear schema/metadata exist"
+      - "Ad-hoc exploration without predefined dashboards"
+      - "Primary interface is Genie (natural language → SQL → results)"
+    
+    do_not_use_when:
+      - "Traditional BI dashboards serve the need"
+      - "Questions are about documents/policies, not data tables"
+      - "Business metrics not well-defined or governed"
+      - "Data quality insufficient for automated SQL generation"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "09-governance-security"
+      - "11-bi-semantic-analytics"
+      - "13-genai-agents-rag"
+    
+    conditional_skills:
+      - skill: "05-data-source-assessment"
+        condition: "Data availability uncertain"
+      - skill: "07-batch-data-engineering"
+        condition: "Curated semantic layer needs creation"
+      - skill: "10-platform-interoperability"
+        condition: "Integration with existing BI tools"
+      - skill: "17-experimentation-value-realization"
+        condition: "Adoption and value measurement needed"
+    
+    usually_excluded_skills:
+      - skill: "06-data-integration-cdc"
+        reason: "Conversational BI typically over batch-refreshed curated data"
+      - skill: "08-streaming-realtime"
+        reason: "Real-time rarely needed for conversational analytics"
+      - skill: "12-ml-predictive-optimization"
+        reason: "Analytical questions not prediction"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Internal analytics, not cross-org sharing"
+    
+    expected_outputs:
+      - "Curated semantic tables with rich metadata"
+      - "Genie space configuration"
+      - "Governed metric definitions"
+      - "Example questions and evaluation set"
+    
+    typical_architecture: "Governed Tables → Genie → Natural Language → SQL Generation → Results"
+  
+  knowledge-rag-assistant:
+    name: "Knowledge/RAG Assistant"
+    purpose: "Answer questions from unstructured documents using retrieval and grounding"
+    use_when:
+      - "Knowledge is in documents, policies, manuals, PDFs, text"
+      - "Need citations and grounding from source documents"
+      - "Retrieval-augmented generation (RAG) pattern required"
+      - "Primary interface is Agent Bricks Knowledge Assistant"
+    
+    do_not_use_when:
+      - "Questions are analytical over structured tables (use conversational-bi)"
+      - "Documents don't exist or are unstructured enough for extraction"
+      - "Deterministic search sufficient"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "09-governance-security"
+      - "13-genai-agents-rag"
+    
+    conditional_skills:
+      - skill: "05-data-source-assessment"
+        condition: "Document corpus location/quality uncertain"
+      - skill: "07-batch-data-engineering"
+        condition: "Document processing/chunking pipeline needed"
+      - skill: "15-operational-serving-apps"
+        condition: "Knowledge assistant embedded in operational workflow"
+      - skill: "17-experimentation-value-realization"
+        condition: "Retrieval quality and adoption measurement needed"
+    
+    usually_excluded_skills:
+      - skill: "06-data-integration-cdc"
+        reason: "Documents typically batch-ingested"
+      - skill: "08-streaming-realtime"
+        reason: "RAG is request-response, not streaming"
+      - skill: "11-bi-semantic-analytics"
+        reason: "Document Q&A not structured BI"
+      - skill: "12-ml-predictive-optimization"
+        reason: "Retrieval and generation, not prediction"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Internal knowledge not cross-org"
+    
+    expected_outputs:
+      - "Document corpus in UC Volume or AI Search index"
+      - "Embedding and chunking strategy"
+      - "Agent Bricks Knowledge Assistant configuration"
+      - "Retrieval evaluation (precision/recall)"
+      - "Groundedness and citation validation"
+    
+    typical_architecture: "Documents → Embeddings/Index → Agent Bricks Knowledge Assistant → Retrieval → Grounded Answer + Citations"
+
+  agentic-workflow:
+    name: "Agentic Workflow"
+    purpose: "Orchestrate multi-step AI workflows with tool use and reasoning"
+    use_when:
+      - "Multi-step reasoning required"
+      - "Tool/function calling needed"
+      - "Complex workflow automation with AI"
+      - "LLM needs to orchestrate multiple systems"
+    
+    do_not_use_when:
+      - "Single-prompt Q&A sufficient"
+      - "Deterministic workflow automation works"
+      - "No need for dynamic tool selection"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "09-governance-security"
+      - "13-genai-agents-rag"
+      - "15-operational-serving-apps"
+      - "16-observability-finops-performance"
+    
+    conditional_skills:
+      - skill: "10-platform-interoperability"
+        condition: "Agent needs to call external systems"
+      - skill: "12-ml-predictive-optimization"
+        condition: "Agent uses ML models as tools"
+      - skill: "17-experimentation-value-realization"
+        condition: "Prove agent effectiveness"
+    
+    usually_excluded_skills:
+      - skill: "06-data-integration-cdc"
+        reason: "Agents query existing data"
+      - skill: "07-batch-data-engineering"
+        reason: "Agent orchestration, not data engineering"
+      - skill: "08-streaming-realtime"
+        reason: "Agents typically request-response"
+    
+    expected_outputs:
+      - "Agent configuration with tools"
+      - "Workflow orchestration logic"
+      - "Tool/function definitions"
+      - "Monitoring and guardrails"
+    
+    typical_architecture: "User Request → Agent Orchestrator → Tool Execution → Response"
+
+  cdc-modernization:
+    name: "CDC Modernization"
+    purpose: "Modernize operational data replication from batch to near-real-time CDC"
+    use_when:
+      - "Operational database changes need propagation"
+      - "Current batch replication too slow"
+      - "Change semantics (insert/update/delete) matter"
+      - "Near-real-time freshness justified"
+    
+    do_not_use_when:
+      - "Batch refresh sufficient"
+      - "Source system doesn't support CDC"
+      - "Cost of CDC not justified by latency need"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "04-solution-architecture"
+      - "05-data-source-assessment"
+      - "06-data-integration-cdc"
+      - "09-governance-security"
+      - "16-observability-finops-performance"
+    
+    conditional_skills:
+      - skill: "02-value-and-kpi-design"
+        condition: "Need to justify CDC investment"
+      - skill: "07-batch-data-engineering"
+        condition: "Downstream transformation layers"
+      - skill: "08-streaming-realtime"
+        condition: "Sub-minute latency required"
+      - skill: "11-bi-semantic-analytics"
+        condition: "BI consumption of replicated data"
+      - skill: "12-ml-predictive-optimization"
+        condition: "ML features need fresh operational data"
+    
+    usually_excluded_skills:
+      - skill: "13-genai-agents-rag"
+        reason: "CDC is data integration, not GenAI"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Internal replication not sharing"
+      - skill: "15-operational-serving-apps"
+        reason: "CDC is ingestion, not serving"
+    
+    expected_outputs:
+      - "CDC pipeline configuration"
+      - "Source system integration"
+      - "Change capture mechanism"
+      - "Idempotency and replay handling"
+      - "Monitoring and reconciliation"
+    
+    typical_architecture: "Source DB → CDC Capture → Delta Tables → Downstream Consumers"
+
+  data-sharing-cleanroom:
+    name: "Data Sharing / Clean Room"
+    purpose: "Enable governed collaboration across organizational boundaries"
+    use_when:
+      - "Partner collaboration needed"
+      - "Data sharing across organizations"
+      - "Clean room analytics for privacy"
+      - "Governed data distribution"
+    
+    do_not_use_when:
+      - "Internal-only use case"
+      - "No partner data involvement"
+      - "Standard internal data mesh sufficient"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "09-governance-security"
+      - "14-data-sharing-cleanrooms"
+    
+    conditional_skills:
+      - skill: "05-data-source-assessment"
+        condition: "Partner data sources unknown"
+      - skill: "07-batch-data-engineering"
+        condition: "Transformation for sharing"
+      - skill: "11-bi-semantic-analytics"
+        condition: "Shared analytics consumption"
+      - skill: "17-experimentation-value-realization"
+        condition: "Measure collaboration value"
+    
+    usually_excluded_skills:
+      - skill: "08-streaming-realtime"
+        reason: "Sharing typically batch"
+      - skill: "12-ml-predictive-optimization"
+        reason: "Sharing pattern not ML"
+      - skill: "13-genai-agents-rag"
+        reason: "Data sharing not conversational AI"
+    
+    expected_outputs:
+      - "Delta Sharing configuration"
+      - "Governance and access policies"
+      - "Shared data contracts"
+      - "Partner onboarding process"
+    
+    typical_architecture: "Source Data → Governed Share → Partner Consumption → Analytics"
+
+  platform-interoperability:
+    name: "Platform Interoperability"
+    purpose: "Design coexistence with customer platform investments"
+    use_when:
+      - "Existing BI, data platform, or SaaS to integrate"
+      - "Fabric, Snowflake, SAP, Power BI coexistence"
+      - "Hybrid architecture across platforms"
+      - "Migration or dual-platform strategy"
+    
+    do_not_use_when:
+      - "Greenfield with no existing platforms"
+      - "Platform replacement explicitly desired"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "04-solution-architecture"
+      - "10-platform-interoperability"
+    
+    conditional_skills:
+      - skill: "02-value-and-kpi-design"
+        condition: "Need to justify platform strategy"
+      - skill: "05-data-source-assessment"
+        condition: "Data ownership across platforms"
+      - skill: "06-data-integration-cdc"
+        condition: "Cross-platform data flow"
+      - skill: "07-batch-data-engineering"
+        condition: "Transformation across boundaries"
+      - skill: "09-governance-security"
+        condition: "Cross-platform governance"
+      - skill: "11-bi-semantic-analytics"
+        condition: "BI layer integration"
+    
+    usually_excluded_skills:
+      - skill: "13-genai-agents-rag"
+        reason: "Platform integration not GenAI"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Internal integration not external sharing"
+    
+    expected_outputs:
+      - "Platform responsibility matrix"
+      - "Data ownership boundaries"
+      - "Integration patterns"
+      - "Coexistence architecture"
+    
+    typical_architecture: "Platform A ↔ Databricks ↔ Platform B (Lead / Coexist / Integrate)"
+
+  customer-360:
+    name: "Customer 360"
+    purpose: "Create unified customer view across systems"
+    use_when:
+      - "Customer data fragmented across systems"
+      - "Need single customer identity"
+      - "Cross-system customer analytics"
+      - "Personalization or customer journey needed"
+    
+    do_not_use_when:
+      - "Single source system sufficient"
+      - "No cross-system customer matching needed"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "05-data-source-assessment"
+      - "06-data-integration-cdc"
+      - "09-governance-security"
+    
+    conditional_skills:
+      - skill: "07-batch-data-engineering"
+        condition: "Customer matching and integration logic"
+      - skill: "08-streaming-realtime"
+        condition: "Real-time customer state needed"
+      - skill: "11-bi-semantic-analytics"
+        condition: "Customer analytics dashboards"
+      - skill: "12-ml-predictive-optimization"
+        condition: "Customer propensity, LTV, churn models"
+      - skill: "15-operational-serving-apps"
+        condition: "Operational customer workflows"
+    
+    usually_excluded_skills:
+      - skill: "13-genai-agents-rag"
+        reason: "Customer 360 is integration + analytics"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Internal customer view not external sharing"
+    
+    expected_outputs:
+      - "Unified customer entity"
+      - "Customer matching logic"
+      - "Customer attributes and history"
+      - "PII governance controls"
+    
+    typical_architecture: "Source Systems → CDC/Batch → Customer Integration → Golden Record → Analytics/Apps"
+
+  optimization:
+    name: "Optimization"
+    purpose: "Optimize resource allocation, pricing, scheduling, or operations"
+    use_when:
+      - "Constrained resource allocation problem"
+      - "Price optimization needed"
+      - "Schedule or route optimization"
+      - "Complex constraint-based decision"
+    
+    do_not_use_when:
+      - "Simple rule-based allocation sufficient"
+      - "Optimization constraints not well-defined"
+      - "No ability to action optimized results"
+    
+    required_skills:
+      - "01-business-problem-framing"
+      - "02-value-and-kpi-design"
+      - "04-solution-architecture"
+      - "12-ml-predictive-optimization"
+      - "17-experimentation-value-realization"
+    
+    conditional_skills:
+      - skill: "05-data-source-assessment"
+        condition: "Optimization inputs unclear"
+      - skill: "07-batch-data-engineering"
+        condition: "Feature prep for optimization"
+      - skill: "08-streaming-realtime"
+        condition: "Real-time re-optimization needed"
+      - skill: "11-bi-semantic-analytics"
+        condition: "Optimization insights BI consumption"
+      - skill: "15-operational-serving-apps"
+        condition: "Optimized decisions drive operations"
+    
+    usually_excluded_skills:
+      - skill: "13-genai-agents-rag"
+        reason: "Optimization not conversational AI"
+      - skill: "14-data-sharing-cleanrooms"
+        reason: "Internal optimization not sharing"
+    
+    expected_outputs:
+      - "Optimization model"
+      - "Constraint definitions"
+      - "Objective function"
+      - "Optimized allocation/pricing/schedule"
+      - "Business lift measurement"
+    
+    typical_architecture: "Inputs → Optimization Model → Optimal Solution → Action → Value Measurement"
+
+activation_rules:
+  # Cross-cutting concerns
+  - condition: "PII, PHI, or sensitive data"
+    add_skill: "09-governance-security"
+  
+  - condition: "Customer demo or meeting"
+    add_skill: "03-demo-and-meeting-design"
+  
+  - condition: "No customer data available"
+    add_skill: "18-demo-data-synthetic-assets"
+  
+  - condition: "Production deployment"
+    add_skill: "16-observability-finops-performance"
+  
+  - condition: "Need to prove business value"
+    add_skill: "17-experimentation-value-realization"
+  
+  # Conditional additions
+  - condition: "Existing BI platform (Power BI, Tableau, Fabric)"
+    add_skill: "10-platform-interoperability"
+  
+  - condition: "Unknown data sources or quality"
+    add_skill: "05-data-source-assessment"
+  
+  - condition: "Latency requirement sub-second or seconds"
+    add_skill: "08-streaming-realtime"
+  
+  - condition: "Operational database changes need replication"
+    add_skill: "06-data-integration-cdc"
+  
+  - condition: "Transformation layer needed"
+    add_skill: "07-batch-data-engineering"
+    caveat: "Only if transformation adds value (governance, reuse, correctness)"
+  
+  - condition: "Predictions drive operational actions"
+    add_skill: "15-operational-serving-apps"
+
+exclusion_rules:
+  # Clear exclusions
+  - pattern: "bi-decision-intelligence"
+    exclude: ["12-ml-predictive-optimization", "13-genai-agents-rag"]
+    unless: "Hybrid use case explicitly requires both"
+  
+  - pattern: "predictive-ml"
+    exclude: ["13-genai-agents-rag"]
+    unless: "GenAI + ML hybrid (e.g. RAG + recommendation)"
+  
+  - pattern: "conversational-bi"
+    exclude: ["12-ml-predictive-optimization"]
+    unless: "Hybrid use case (e.g. conversational interface to ML predictions)"
+  
+  - pattern: "knowledge-rag-assistant"
+    exclude: ["12-ml-predictive-optimization"]
+    unless: "Agent uses ML as a tool"
+  
+  - condition: "Batch latency sufficient (hours/days)"
+    exclude: ["06-data-integration-cdc", "08-streaming-realtime"]
+  
+  - condition: "Curated data already exists"
+    exclude: ["05-data-source-assessment", "06-data-integration-cdc", "07-batch-data-engineering"]
+    unless: "New sources or transformation explicitly needed"
+  
+  - condition: "No operational action required"
+    exclude: ["15-operational-serving-apps"]

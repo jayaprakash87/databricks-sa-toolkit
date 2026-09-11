@@ -1,105 +1,108 @@
-# Databricks Solution Architect Toolkit — Documentation
+# databricks-sa-toolkit
 
-This documentation defines how the shared SA toolkit should be organized, versioned, promoted, and used with Genie Code.
+Reusable **Databricks Solution Architect toolkit** for customer discovery, solution design, demos, value engineering, architecture, and production-readiness work.
 
-## Core repository model
+**Version:** 2.0.0  
+**Design:** use-case-first, capability-composed, Databricks-aware.
 
-The Git repository is the **source of truth**.
+## Why v2
 
-Reviewed workspace skills are **published artifacts** promoted from Git into the active Databricks workspace skill location.
+The original toolkit over-assumed a data-engineering journey such as Raw → Bronze → Silver → Gold. That is one valid implementation pattern, but it is not a universal solution flow.
+
+v2 starts with the customer outcome and decision/action to improve, then selects only the capabilities required.
+
+Examples:
+
+- Executive KPI copilot → BI/Semantic + GenAI
+- Pricing optimisation → curated data + ML + BI
+- Supply-chain CDC → CDC + streaming/batch + governance
+- Retail-media measurement → sharing/clean rooms + analytics + governance
+- Predictive availability → integration/streaming where required + ML + serving + value measurement
+
+## Repository layout
 
 ```text
-Git repository
 databricks-sa-toolkit/
-│
-├── AGENTS.md
-├── .assistant/
-│   └── skills/
-│       └── <skill-name>/SKILL.md
-├── templates/
-├── examples/
-├── scripts/
-│   └── promote_skills.sh      # CLI-based (web terminal)
-├── setup/
-│   └── promote_skills.py      # dbutils-based (serverless notebook)
-└── docs/
-
-        │
-        │ PR / review / merge
-        ▼
-
-Promotion (choose one):
-  • setup/promote_skills.py (serverless notebook - recommended)
-  • scripts/promote_skills.sh (web terminal CLI)
-
-        │
-        ▼
-
-/Workspace/Users/{username}/.assistant/skills/
-        │
-        └── active Genie Code skills
+├── .assistant/skills/              # Canonical skills consumed by agents
+├── templates/                      # Reusable customer/SA artefact templates
+├── examples/retail/                # Worked retail examples
+├── docs/                           # Installation, architecture and authoring docs
+├── scripts/                        # Setup, validation, promotion and packaging
+├── AGENTS.md                       # Instructions for coding/AI agents
+├── CONTRIBUTING.md                 # Contribution standards
+├── CHANGELOG.md                    # Release history
+├── MANIFEST.json                   # Machine-readable skill inventory
+├── SKILL_SELECTION_MATRIX.md       # Pattern-to-skill routing aid
+├── VERSION                          # Current semantic version
+└── README.md
 ```
 
-## Instruction layers
+## Mandatory entry point
 
-There are three different instruction scopes:
+Every new customer solution begins with:
 
-1. `/Workspace/.assistant_workspace_instructions.md`
-   - workspace-wide default behavior
+`.assistant/skills/00-solution-orchestrator/SKILL.md`
 
-2. `<repo-root>/AGENTS.md`
-   - behavior specific to work inside the toolkit repository/project
+The orchestrator must determine:
 
-3. `.assistant/skills/<skill-name>/SKILL.md`
-   - focused reusable workflows loaded when relevant
+1. business outcome;
+2. target persona/decision/action;
+3. primary KPI and value mechanism;
+4. required solution patterns;
+5. minimum data needed;
+6. skills to invoke;
+7. skills explicitly not required;
+8. architecture/proof assets;
+9. unknowns to validate;
+10. recommended sequence.
 
-Do not duplicate the same large instruction block in every skill.
+It must **never** assume ingestion, medallion layers, ML, GenAI, or a dashboard without justification.
 
-See `docs/INSTRUCTION_HIERARCHY.md`.
+## Quick start
 
-## Implementation execution boundary
-
-For implementation work, the default operating model is:
-
-**UNDERSTAND → DESIGN → GENERATE CODE → EXPLAIN → STOP → USER EXECUTES → REVIEW RESULTS**
-
-The assistant should not silently execute generated code or change Databricks resources unless the user explicitly requests execution.
-
-## Promotion model
-
-### Serverless Notebook (Recommended)
-
-For serverless compute environments, use the notebook-based promotion:
-
-1. Open `setup/promote_skills.py`
-2. Run all cells for dry-run mode (default)
-3. Set `mode=apply` widget and run all cells to promote
-4. Optionally set `prune=true` to remove stale skills
-
-### CLI Script (Web Terminal)
-
-For web terminal environments with CLI access:
+Validate the repository:
 
 ```bash
-./scripts/promote_skills.sh
+python3 scripts/validate_toolkit.py
 ```
 
-for a dry run.
+Install/copy skills into a local assistant skills directory:
 
 ```bash
-./scripts/promote_skills.sh --apply
+./scripts/setup.sh
 ```
 
-to promote reviewed skills.
+Preview promotion to a Databricks workspace checkout:
 
 ```bash
-./scripts/promote_skills.sh --apply --prune
+./scripts/promote_skills.sh --target /Workspace/.assistant/skills/
 ```
 
-only when stale published skills should also be removed.
+Apply promotion:
 
-**Note:** The CLI script requires the Databricks CLI, which is only available in the web terminal, not in serverless notebook cells.
+```bash
+./scripts/promote_skills.sh --target /Workspace/.assistant/skills/ --apply
+```
 
-### Documentation
+Apply and remove target skills not present in this repo:
 
-See `docs/INSTALL_DATABRICKS.md` for detailed instructions on both approaches and `docs/RELEASE_PROCESS.md` for the release workflow.
+```bash
+./scripts/promote_skills.sh --target /Workspace/.assistant/skills/ --apply --prune
+```
+
+See `docs/INSTALL_DATABRICKS.md` and `docs/PROMOTION.md` for details.
+
+## Solution Patterns (New in 2.1.0)
+
+The toolkit now includes a **solution pattern layer** between business use cases and specialist skills:
+
+* **10 reusable patterns** — Predictive ML, Real-Time, BI, GenAI, CDC, Interoperability, Customer 360, Agentic Workflow, Data Sharing, Optimization
+* **Machine-readable routing** — `.assistant/solution-patterns.yaml` defines skill compositions
+* **Pattern library** — `solution-patterns/` contains detailed guides for each pattern
+* **Structured contracts** — Orchestrator outputs YAML contracts with justifications
+
+See [`solution-patterns/README.md`](solution-patterns/README.md) for details.
+
+**Example:** A "Predictive ML" pattern typically requires business framing, value design, architecture, ML, and experimentation skills — but explicitly excludes GenAI, CDC, and streaming unless requirements justify them.
+
+The orchestrator uses patterns to avoid forcing unnecessary complexity (like Bronze/Silver/Gold on every use case).

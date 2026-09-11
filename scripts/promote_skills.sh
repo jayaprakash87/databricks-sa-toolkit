@@ -1,261 +1,200 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# promote_skills.sh
-#
-# Sync Databricks Genie Code skills from a Git working tree into the
-# workspace-level active skills path.
-#
-# Default behavior is SAFE:
-# - dry-run unless --apply is provided
-# - copies/updates skills
-# - does NOT delete target skills unless --prune is provided
-#
-# Assumes the Databricks CLI is installed and authenticated.
-#
-# Typical usage:
-#
-#   ./scripts/promote_skills.sh \
-#     --source .assistant/skills \
-#     --target /Workspace/.assistant/skills
-#
-# Apply changes:
-#
-#   ./scripts/promote_skills.sh \
-#     --source .assistant/skills \
-#     --target /Workspace/.assistant/skills \
-#     --apply
-#
-# Apply and remove target skills no longer present in source:
-#
-#   ./scripts/promote_skills.sh \
-#     --source .assistant/skills \
-#     --target /Workspace/.assistant/skills \
-#     --apply --prune
-#
-# Optional profile:
-#
-#   DATABRICKS_CONFIG_PROFILE=dev \
-#   ./scripts/promote_skills.sh --apply
-
-SOURCE=".assistant/skills"
-TARGET="/Workspace/.assistant/skills"
-APPLY=false
-PRUNE=false
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE="$ROOT/.assistant/skills"
+TARGET="/Workspace/.assistant/skills/"
+APPLY=0
+PRUNE=0
+SKIP_VALIDATION=0
 
 usage() {
-  cat <<EOF
-Usage: $0 [options]
+  cat <<USAGE
+Usage: $0 [--target PATH] [--apply] [--prune] [--skip-validation]
+
+Promote skills from repository to deployment target.
+Dry-run is the default (safe preview mode).
 
 Options:
-  --source PATH    Local source skills directory
-                   Default: .assistant/skills
-
-  --target PATH    Databricks workspace target directory
-                   Default: /Workspace/.assistant/skills
-
-  --apply          Perform writes. Without this flag, script is dry-run only.
-
-  --prune          Delete target skill folders not present in source.
-                   Only valid together with --apply.
-
-  -h, --help       Show this help.
-
-Environment:
-  DATABRICKS_CONFIG_PROFILE   Optional Databricks CLI profile.
+  --target PATH          Override target (default: /Workspace/.assistant/skills/)
+  --apply                Actually perform copy/update (dry-run without this)
+  --prune                With --apply, remove target skills not in source (requires confirmation)
+  --skip-validation      Skip pre-promotion validation (not recommended)
+  -h, --help             Show this help
 
 Safety:
-  - Dry-run is the default.
-  - --prune is never implied.
-  - Each source skill must contain SKILL.md.
-EOF
+  - Dry-run by default (explicit --apply required)
+  - Runs validation before promotion (unless --skip-validation)
+  - Checksum-based diff to detect changes
+  - Prune requires explicit confirmation
+
+Examples:
+  $0                              # Preview what would be promoted
+  $0 --apply                      # Promote skills (add/update only)
+  $0 --apply --prune              # Promote and remove orphaned skills (with confirmation)
+  $0 --target /tmp/skills/ --apply   # Promote to custom location
+USAGE
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --source)
-      SOURCE="$2"
-      shift 2
-      ;;
-    --target)
-      TARGET="$2"
-      shift 2
-      ;;
-    --apply)
-      APPLY=true
-      shift
-      ;;
-    --prune)
-      PRUNE=true
-      shift
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      echo "Unknown argument: $1" >&2
-      usage
-      exit 1
-      ;;
+    --target) TARGET="$2"; shift 2 ;;
+    --apply) APPLY=1; shift ;;
+    --prune) PRUNE=1; shift ;;
+    --skip-validation) SKIP_VALIDATION=1; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "Unknown argument: $1" >&2; usage; exit 2 ;;
   esac
 done
 
-if [[ "$PRUNE" == "true" && "$APPLY" != "true" ]]; then
-  echo "ERROR: --prune requires --apply." >&2
-  exit 1
+if [[ "$PRUNE" -eq 1 && "$APPLY" -ne 1 ]]; then
+  echo "ERROR: --prune requires --apply" >&2
+  exit 2
 fi
 
-if ! command -v databricks >/dev/null 2>&1; then
-  echo "ERROR: Databricks CLI is not installed or not on PATH." >&2
-  exit 1
-fi
+[[ -d "$SOURCE" ]] || { echo "ERROR: Missing source: $SOURCE" >&2; exit 1; }
 
-if [[ ! -d "$SOURCE" ]]; then
-  echo "ERROR: Source directory does not exist: $SOURCE" >&2
-  exit 1
-fi
-
-echo "Source: $SOURCE"
-echo "Target: $TARGET"
-echo "Mode:   $([[ "$APPLY" == "true" ]] && echo APPLY || echo DRY-RUN)"
-echo "Prune:  $PRUNE"
-echo
-
-# Validate local skill layout.
-mapfile -t SOURCE_SKILLS < <(
-  find "$SOURCE" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
-)
-
-if [[ ${#SOURCE_SKILLS[@]} -eq 0 ]]; then
-  echo "ERROR: No skill directories found under: $SOURCE" >&2
-  exit 1
-fi
-
-for skill in "${SOURCE_SKILLS[@]}"; do
-  if [[ ! -f "$SOURCE/$skill/SKILL.md" ]]; then
-    echo "ERROR: Missing SKILL.md for source skill: $skill" >&2
+# Run validation before promotion (unless skipped)
+if [[ "$SKIP_VALIDATION" -eq 0 ]]; then
+  echo "Running pre-promotion validation..."
+  if ! python3 "$ROOT/scripts/validate_toolkit.py"; then
+    echo ""
+    echo "❌ Validation failed. Fix errors before promotion."
+    echo "   (Use --skip-validation to bypass, not recommended)"
     exit 1
   fi
-done
-
-echo "Validated ${#SOURCE_SKILLS[@]} source skill(s)."
-echo
-
-# Helper that respects optional CLI profile.
-dbx() {
-  if [[ -n "${DATABRICKS_CONFIG_PROFILE:-}" ]]; then
-    databricks "$@" --profile "$DATABRICKS_CONFIG_PROFILE"
-  else
-    databricks "$@"
-  fi
-}
-
-# Ensure target root exists.
-if [[ "$APPLY" == "true" ]]; then
-  echo "Ensuring target directory exists..."
-  dbx workspace mkdirs "$TARGET"
-else
-  echo "[DRY-RUN] Would ensure target directory exists: $TARGET"
+  echo ""
 fi
 
-echo
-echo "Skills to promote:"
-for skill in "${SOURCE_SKILLS[@]}"; do
-  echo "  - $skill"
-done
-echo
+# Collect source skills
+mapfile -t SRC_SKILLS < <(find "$SOURCE" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
 
-# Upload each skill directory recursively.
-for skill in "${SOURCE_SKILLS[@]}"; do
-  src="$SOURCE/$skill"
-  dst="$TARGET/$skill"
+# Collect target skills (if target exists)
+if [[ -d "$TARGET" ]]; then
+  mapfile -t TGT_SKILLS < <(find "$TARGET" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
+else
+  TGT_SKILLS=()
+fi
 
-  if [[ "$APPLY" == "true" ]]; then
-    echo "Promoting: $skill"
-    dbx workspace mkdirs "$dst"
+# Determine what would change
+TO_ADD=()
+TO_UPDATE=()
+UNCHANGED=()
+TO_REMOVE=()
 
-    # Upload all files within the skill directory.
-    while IFS= read -r -d '' file; do
-      rel="${file#$src/}"
-      remote="$dst/$rel"
-      remote_parent="$(dirname "$remote")"
-
-      dbx workspace mkdirs "$remote_parent"
-
-      echo "  upload $rel"
-      dbx workspace import \
-        --file "$file" \
-        --format AUTO \
-        --overwrite \
-        "$remote"
-    done < <(find "$src" -type f -print0)
+for skill in "${SRC_SKILLS[@]}"; do
+  if [[ ! -d "$TARGET/$skill" ]]; then
+    TO_ADD+=("$skill")
   else
-    echo "[DRY-RUN] Would promote: $skill"
-    find "$src" -type f | sed "s#^$src/#  - #"
+    # Check if content differs (checksum-based)
+    src_md5=$(find "$SOURCE/$skill" -type f -exec md5sum {} \; | sort | md5sum | awk '{print $1}')
+    tgt_md5=$(find "$TARGET/$skill" -type f -exec md5sum {} \; | sort | md5sum | awk '{print $1}')
+    
+    if [[ "$src_md5" != "$tgt_md5" ]]; then
+      TO_UPDATE+=("$skill")
+    else
+      UNCHANGED+=("$skill")
+    fi
   fi
 done
 
-# Optional prune:
-# list target children and remove only direct child folders not present in source.
-if [[ "$PRUNE" == "true" ]]; then
-  echo
-  echo "Prune enabled."
+# Find skills in target but not in source (would be pruned)
+for skill in "${TGT_SKILLS[@]}"; do
+  found=0
+  for src_skill in "${SRC_SKILLS[@]}"; do
+    [[ "$skill" == "$src_skill" ]] && found=1 && break
+  done
+  if [[ "$found" -eq 0 ]]; then
+    TO_REMOVE+=("$skill")
+  fi
+done
 
-  TARGET_JSON="$(dbx workspace list "$TARGET" --output json || true)"
+# Display summary
+echo "╔════════════════════════════════════════════════════════════════"
+echo "║ Promotion Summary"
+echo "╠════════════════════════════════════════════════════════════════"
+echo "║ Source: $SOURCE"
+echo "║ Target: $TARGET"
+echo "║ Mode:   $([[ "$APPLY" -eq 1 ]] && echo "✓ APPLY" || echo "○ DRY-RUN")"
+echo "╠════════════════════════════════════════════════════════════════"
 
-  if [[ -n "$TARGET_JSON" ]]; then
-    python3 - "$SOURCE" "$TARGET" "$TARGET_JSON" <<'PY'
-import json, os, sys, subprocess
+if [[ ${#TO_ADD[@]} -gt 0 ]]; then
+  echo "║ ➕ Skills to ADD (${#TO_ADD[@]}):"
+  for skill in "${TO_ADD[@]}"; do
+    echo "║    + $skill"
+  done
+fi
 
-source = sys.argv[1]
-target = sys.argv[2]
-payload = json.loads(sys.argv[3])
+if [[ ${#TO_UPDATE[@]} -gt 0 ]]; then
+  echo "║ 🔄 Skills to UPDATE (${#TO_UPDATE[@]}):"
+  for skill in "${TO_UPDATE[@]}"; do
+    echo "║    ~ $skill"
+  done
+fi
 
-source_skills = {
-    name for name in os.listdir(source)
-    if os.path.isdir(os.path.join(source, name))
-}
+if [[ ${#UNCHANGED[@]} -gt 0 ]]; then
+  echo "║ ✓ Skills UNCHANGED (${#UNCHANGED[@]}):"
+  for skill in "${UNCHANGED[@]}"; do
+    echo "║    = $skill"
+  done
+fi
 
-objects = payload if isinstance(payload, list) else payload.get("objects", [])
-target_skills = set()
+if [[ "$PRUNE" -eq 1 && ${#TO_REMOVE[@]} -gt 0 ]]; then
+  echo "║ ❌ Skills to REMOVE (${#TO_REMOVE[@]}):"
+  for skill in "${TO_REMOVE[@]}"; do
+    echo "║    - $skill"
+  done
+fi
 
-for obj in objects:
-    path = obj.get("path", "")
-    name = path.rstrip("/").split("/")[-1]
-    if name:
-        target_skills.add(name)
+echo "╚════════════════════════════════════════════════════════════════"
+echo ""
 
-stale = sorted(target_skills - source_skills)
+# If dry-run, stop here
+if [[ "$APPLY" -ne 1 ]]; then
+  echo "ℹ️  This was a dry-run. Use --apply to execute."
+  exit 0
+fi
 
-if not stale:
-    print("No stale target skills found.")
-    raise SystemExit(0)
+# Execute promotion
+echo "Executing promotion..."
+echo ""
 
-print("Stale target skills:")
-for name in stale:
-    print(f"  - {name}")
+# Add and update skills
+for skill in "${TO_ADD[@]}" "${TO_UPDATE[@]}"; do
+  mkdir -p "$TARGET/$skill"
+  cp -R "$SOURCE/$skill"/. "$TARGET/$skill"/
+  action=$([[ " ${TO_ADD[*]} " =~ " ${skill} " ]] && echo "ADDED" || echo "UPDATED")
+  echo "✓ $action: $skill"
+done
 
-profile = os.environ.get("DATABRICKS_CONFIG_PROFILE")
-
-for name in stale:
-    cmd = [
-        "databricks", "workspace", "delete",
-        f"{target}/{name}",
-        "--recursive"
-    ]
-    if profile:
-        cmd += ["--profile", profile]
-    print(f"Deleting stale skill: {name}")
-    subprocess.run(cmd, check=True)
-PY
+# Handle pruning with confirmation
+if [[ "$PRUNE" -eq 1 && ${#TO_REMOVE[@]} -gt 0 ]]; then
+  echo ""
+  echo "⚠️  PRUNE WARNING: About to remove ${#TO_REMOVE[@]} skill(s) from target:"
+  for skill in "${TO_REMOVE[@]}"; do
+    echo "   - $skill"
+  done
+  echo ""
+  read -p "Type 'yes' to confirm deletion: " confirm
+  
+  if [[ "$confirm" == "yes" ]]; then
+    for skill in "${TO_REMOVE[@]}"; do
+      rm -rf "$TARGET/$skill"
+      echo "✓ REMOVED: $skill"
+    done
+    echo ""
+    echo "✓ Pruning complete."
+  else
+    echo "✗ Pruning cancelled."
+    exit 1
   fi
 fi
 
-echo
-if [[ "$APPLY" == "true" ]]; then
-  echo "Promotion complete."
-  echo "Start a new Genie Code conversation to ensure updated skills are picked up."
-else
-  echo "Dry-run complete. Re-run with --apply to perform the promotion."
+echo ""
+echo "✅ Promotion complete!"
+echo "   Added:     ${#TO_ADD[@]}"
+echo "   Updated:   ${#TO_UPDATE[@]}"
+echo "   Unchanged: ${#UNCHANGED[@]}"
+if [[ "$PRUNE" -eq 1 ]]; then
+  echo "   Removed:   ${#TO_REMOVE[@]}"
 fi

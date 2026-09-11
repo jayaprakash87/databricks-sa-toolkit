@@ -1,209 +1,118 @@
-# Databricks Solution Architect Toolkit - Agent Instructions
+# AGENTS.md
 
-This repository contains reusable Databricks Solution Architect skills, templates, examples, and supporting assets.
+Instructions for AI/coding agents working in `databricks-sa-toolkit`.
 
-These instructions apply when Genie Code is working inside this repository or its descendant folders.
+## Mission
 
-## Purpose
+Maintain a reusable Senior Solution Architect toolkit. The repository is not customer-specific and must not be optimised only for one interview, one account, or one architecture pattern.
 
-Treat this repository as a shared Senior Solution Architect toolkit for:
-- customer discovery
-- architecture workshops
-- solution design
-- prototypes and demos
-- technical implementation planning
-- governance and security reviews
-- cloud/networking reviews
-- performance and cost analysis
-- PoCs
-- production-readiness reviews
-- reusable Databricks accelerators
+## Non-negotiable design rules
 
-Do not treat the repository as interview-only.
+1. **Use-case-first.** Begin with the business outcome, persona, decision/action and KPI.
+2. **Compose capabilities.** Select only the specialist skills needed.
+3. **No mandatory medallion flow.** Bronze/Silver/Gold is optional.
+4. **No unnecessary ingestion.** Existing governed/curated data may be the correct starting point.
+5. **No unnecessary ML/GenAI.** Prefer the simplest capability that solves the problem.
+6. **Demo the decision, not the technology.** A demo must show how a user makes a better decision or takes a better action.
+7. **Separate facts from hypotheses.** Public/customer-verified facts, SA hypotheses, and unknowns must be labelled.
+8. **Value before features.** Tie architecture choices to KPIs and measurable outcomes.
+9. **Databricks-aware, not Databricks-forced.** Integrate/coexist with customer platforms when that is the better architecture.
+10. **Reusable artefacts.** Skills should work across industries unless deliberately domain-specific.
 
-## Working model
+## Orchestration and routing (v2.1.0+)
 
-Use this sequence by default:
+### Solution pattern layer
 
-**CUSTOMER PROBLEM → BUSINESS CONSEQUENCE → REQUIREMENTS → ARCHITECTURE → IMPLEMENTATION PLAN → VALIDATION → BUSINESS VALUE → NEXT STEP**
+The toolkit includes a **solution pattern layer** between business use cases and specialist skills:
 
-For implementation work:
+* **Machine-readable routing** - `.assistant/solution-patterns.yaml` defines 10 reusable patterns
+* **Pattern library** - `solution-patterns/` contains detailed guides
+* **Structured contracts** - Orchestrator outputs YAML contracts with explicit justifications
 
-**UNDERSTAND → DESIGN → GENERATE CODE → EXPLAIN → STOP → USER EXECUTES → REVIEW RESULTS**
+### Pattern principles
 
-## Skill usage
+* **Patterns are defaults, not rigid rules** - Override when requirements differ from typical assumptions
+* **Explicit exclusions matter** - Document why capabilities are NOT needed, not just which are
+* **Different inputs → different outputs** - Orchestrator must produce different paths for different problems
+* **Anti-patterns are first-class** - Never force unnecessary ingestion, transformation, streaming, ML, GenAI, or medallion
 
-Reusable Genie Code skills live under:
+### Available patterns
 
-`.assistant/skills/<skill-name>/SKILL.md`
+1. **bi-decision-intelligence** - Governed metrics, dashboards, exploration
+2. **predictive-ml** - Forecasting, ranking, recommendation, optimization
+3. **real-time-operational-intelligence** - Sub-minute operational decisions
+4. **conversational-bi** - Natural language over governed tables (Genie, SQL generation)
+5. **knowledge-rag-assistant** - Document Q&A with retrieval and citations (Agent Bricks)
+6. **agentic-workflow** - Multi-step AI workflows with tool use
+7. **cdc-modernization** - Near-real-time operational data replication
+8. **data-sharing-cleanroom** - Governed cross-org collaboration
+9. **platform-interoperability** - Coexistence with Fabric, Snowflake, Power BI, SAP
+10. **customer-360** - Unified customer view across systems
+11. **optimization** - Resource allocation, pricing, scheduling
 
-Prefer an existing focused skill when one matches the task.
+See `solution-patterns/README.md` for detailed pattern usage.
 
-Examples:
-- ambiguous business problem → `customer-discovery`
-- value articulation → `value-mapping`
-- customer session planning → `customer-meeting`
-- end-to-end architecture → `solution-architecture`
-- prototype scope → `prototype-planner`
-- environment setup → `solution-bootstrap`
-- synthetic datasets → `synthetic-data-generator`
-- ingestion → `source-ingestion`
-- canonical trusted entities → `silver-canonicalization`
-- analytical/KPI products → `gold-analytical-modeling`
-- correctness/performance → `validation-performance-review`
-- conversational analytics → `genie-agent-integration`
-- custom application experience → `databricks-apps-integration`
-- PoC → `poc-design`
-- production gate → `production-readiness-review`
+## Skill invocation
 
-Do not invoke every skill automatically. Use only what the current task requires.
+Use `00-solution-orchestrator` first for a new customer use case. It will:
 
-## Customer-first behavior
+1. Classify the business problem into one or more solution patterns
+2. Select required skills from the pattern definition
+3. Add conditional skills based on requirements and activation rules
+4. Explicitly exclude unnecessary skills with rationale
+5. Output a structured YAML Solution Orchestration Contract
 
-- Do not lead with Databricks features.
-- Understand the customer objective, personas, current state, pain, business consequence, success criteria, and constraints first.
-- Separate facts from assumptions.
-- Ask only discovery questions that can materially affect value, scope, architecture, security, delivery, or cost.
-- Adapt the explanation to the audience.
-- Do not attack incumbent platforms. Establish the actual customer gap and evaluation criteria first.
-- End customer-facing work with a clear decision, validation step, owner, or next action.
+A skill can be skipped. The orchestrator should explicitly say why a capability is unnecessary when there is a reasonable chance it could otherwise be assumed.
 
-## Architecture standards
+**Test your orchestration:** Different business problems should produce materially different skill compositions. See `TEST_ORCHESTRATION.md` for validation test cases.
 
-- Prefer the simplest design that satisfies the requirements.
-- Use left-to-right architecture where useful:
-  Sources → Ingestion → Processing/Storage → Governance → Serving → Consumption → Operations.
-- Explain what belongs inside Databricks and what remains outside.
-- Do not force medallion architecture, streaming, CDC, Auto Loader, Genie Agents, Databricks Apps, ML, or GenAI.
-- State grain, keys, relationships, metric semantics, and change behavior explicitly when relevant.
-- Distinguish prototype choices from production design.
-- Discuss alternatives and trade-offs.
-- Production architecture should consider identity, governance, networking, reliability, recovery, observability, CI/CD, environment promotion, scale, cost, ownership, and support.
+## Editing rules
 
-## Execution boundary
+- Canonical skills live under `.assistant/skills/<skill>/SKILL.md`.
+- Solution patterns live under `solution-patterns/<pattern>.md`.
+- Machine-readable routing in `.assistant/solution-patterns.yaml`.
+- Do not create duplicate skill copies elsewhere in the repo.
+- Update `MANIFEST.json` when adding/removing/renaming a skill.
+- Update `.assistant/solution-patterns.yaml` when adding/modifying patterns.
+- Update `CHANGELOG.md` and `VERSION` for releases.
+- Run `python3 scripts/validate_toolkit.py` before committing.
+- Keep examples synthetic unless explicitly using approved public/customer data.
 
-Unless the user explicitly asks for execution:
+## Orchestrator contract format (v2.1.0+)
 
-The assistant MAY:
-- analyze requirements
-- design architecture
-- generate Python, PySpark, SQL, shell, YAML, configuration, or setup code
-- generate synthetic-data code
-- generate validation queries
-- review returned outputs, errors, plans, metrics, or screenshots
+The orchestrator produces structured YAML contracts with:
 
-The assistant MUST NOT silently:
-- run implementation code
-- create or modify catalogs, schemas, tables, views, volumes, jobs, pipelines, warehouses, endpoints, models, apps, or other workspace resources
-- change permissions
-- generate physical synthetic datasets by executing code
-- install packages
-- deploy infrastructure
-- change networking or credentials
+* **use_case** - Business problem, outcome, persona, decision, KPIs
+* **context** - Customer, industry, current state, constraints, known platforms
+* **solution_patterns** - Primary/secondary patterns with rationale and explicit exclusions
+* **skills** - Mandatory, conditional, explicitly_not_required with reasons, sequence
+* **data** - Required inputs, existing assets, latency requirements
+* **architecture** - Logical pattern, integration, serving, governance, medallion justification
+* **proof** - Business/UX/technical proof, demo assets
+* **value** - Baseline, targets, measurement method, hypothesis
+* **unknowns** - Customer/internal questions, assumptions
+* **next_step** - Recommended action, success criteria, timeline
 
-When generating executable artifacts:
-1. state assumptions
-2. provide code
-3. explain expected output
-4. provide validation checks
-5. stop for user execution
+See `.assistant/skills/00-solution-orchestrator/SKILL.md` for complete contract schema.
 
-## Synthetic data
+## Safety and customer confidentiality
 
-When synthetic data is needed:
-- design schema and grain first
-- define keys and relationships
-- define required business scenarios and edge cases
-- use deterministic seeds
-- generate code rather than physical data by default
-- prefer Spark-native distributed generation for large-scale data
-- do not rely on randomness to create required scenarios
-- keep generation separate from downstream cleansing/transformation
+Never commit:
 
-## Data engineering correctness
+- customer secrets;
+- Databricks account telemetry;
+- credentials/tokens;
+- production identifiers;
+- confidential architecture diagrams;
+- proprietary datasets.
 
-- Establish grain before joins or aggregation.
-- State join keys and expected cardinality.
-- Protect against many-to-many joins and double counting.
-- Use deterministic deduplication when winner selection matters.
-- Consider late data, corrections, deletes, replay, and idempotency where relevant.
-- Do not silently discard data-quality problems.
-- Define metrics explicitly.
-- Generate reconciliation checks.
+Use synthetic or public data in examples.
 
-## Performance and cost
+## References
 
-- Correctness before optimization.
-- Use evidence such as query plans, Spark UI/query profile, scan size, shuffle, spill, skew, task distribution, partition counts, join strategy, and repeated scans.
-- Do not automatically recommend more compute, broadcast joins, caching, repartitioning, salting, or table partitioning.
-- Tie performance work to SLA, concurrency, reliability, and cost outcomes.
-
-## Security and governance
-
-- Design for least privilege.
-- Treat governance as identity, authorization, ownership, classification, lineage, auditing, policy, lifecycle, and operational control.
-- Never commit or generate repository content containing credentials, private keys, tokens, secrets, or customer-confidential data.
-- Do not expose production data for demo convenience.
-- Identify controls that belong outside Databricks.
-- Do not claim regulatory compliance without evidence.
-
-## Genie Agents and Databricks Apps
-
-- Genie Agent is one optional serving pattern, not the default solution.
-- Use it only when conversational analytics over curated governed data is a real requirement.
-- Do not let undefined business metrics be inferred silently.
-- Prefer explicit semantic definitions and curated business-ready tables/views.
-- Use Databricks Apps only when a custom application experience materially improves the workflow.
-- Consider dashboards, SQL, BI tools, APIs, model serving, and external applications as alternatives.
-
-## Repository contribution rules
-
-- Keep one responsibility per skill.
-- Do not duplicate large instruction blocks unnecessarily.
-- Put shared behavior in repository instructions or workspace instructions.
-- Put reusable task-specific behavior in skills.
-- Put templates in `templates/`.
-- Put stable reusable executable assets in `scripts/` or deployment-specific folders.
-- Do not add customer-specific or confidential information to shared assets.
-- Update `CHANGELOG.md` for material behavior changes.
-- Validate new skills with representative prompts before merging.
-- Prefer normal Git branch, pull-request, review, and release workflows.
-
-## Product freshness
-
-Databricks product behavior changes.
-
-Before giving product-specific implementation guidance involving:
-- APIs
-- permissions
-- workspace paths
-- networking
-- security behavior
-- limits
-- compute
-- deployment
-- Genie Agents
-- Databricks Apps
-- Unity Catalog
-- SQL warehouses
-- current recommended patterns
-
-verify against current official Databricks documentation.
-
-For cloud-specific architecture, also verify against the relevant official cloud-provider documentation when needed.
-
-Do not invent APIs, limits, permission names, feature availability, or configuration properties.
-
-## Response and review quality
-
-Be practical and structured.
-
-For architecture or implementation reviews, identify:
-- what is strong
-- what is missing
-- risks
-- assumptions
-- alternatives/trade-offs
-- recommended next action
-
-Correct vague or technically incorrect claims directly.
+* **Skills index**: `INDEX.md`
+* **Pattern library**: `solution-patterns/README.md`
+* **Human routing reference**: `SKILL_SELECTION_MATRIX.md`
+* **Machine routing**: `.assistant/solution-patterns.yaml`
+* **Test cases**: `TEST_ORCHESTRATION.md`
+* **Contributing**: `CONTRIBUTING.md`
