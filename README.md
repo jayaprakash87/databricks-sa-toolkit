@@ -2,107 +2,128 @@
 
 Reusable **Databricks Solution Architect toolkit** for customer discovery, solution design, demos, value engineering, architecture, and production-readiness work.
 
-**Version:** 2.0.0  
+**Version:** 2.2.0  
 **Design:** use-case-first, capability-composed, Databricks-aware.
 
-## Why v2
+## Philosophy
 
-The original toolkit over-assumed a data-engineering journey such as Raw → Bronze → Silver → Gold. That is one valid implementation pattern, but it is not a universal solution flow.
+Start with the customer outcome and decision/action to improve, then select **only** the capabilities required.
 
-v2 starts with the customer outcome and decision/action to improve, then selects only the capabilities required.
+Do not assume ingestion, medallion layers, ML, GenAI, or dashboards without justification.
 
-Examples:
-
+**Examples:**
 - Executive KPI copilot → BI/Semantic + GenAI
-- Pricing optimisation → curated data + ML + BI
+- Pricing optimization → curated data + ML + BI
 - Supply-chain CDC → CDC + streaming/batch + governance
 - Retail-media measurement → sharing/clean rooms + analytics + governance
 - Predictive availability → integration/streaming where required + ML + serving + value measurement
 
-## Repository layout
+## Repository structure
 
 ```text
 databricks-sa-toolkit/
-├── .assistant/skills/              # Canonical skills consumed by agents
-├── templates/                      # Reusable customer/SA artefact templates
+├── .assistant/skills/              # 19 specialist skills for agents
+├── templates/                      # Customer/SA artifact templates
 ├── examples/retail/                # Worked retail examples
-├── docs/                           # Installation, architecture and authoring docs
-├── scripts/                        # Setup, validation, promotion and packaging
-├── AGENTS.md                       # Instructions for coding/AI agents
+├── scripts/                        # Setup, validation, promotion
+├── AGENTS.md                       # Agent behavioral rules
 ├── CONTRIBUTING.md                 # Contribution standards
 ├── CHANGELOG.md                    # Release history
-├── MANIFEST.json                   # Machine-readable skill inventory
-├── SKILL_SELECTION_MATRIX.md       # Pattern-to-skill routing aid
-├── VERSION                          # Current semantic version
+├── SKILL_SELECTION_MATRIX.md       # Skill routing aid
+├── VERSION                         # Current semantic version
 └── README.md
 ```
 
-## Mandatory entry point
+## The 19 skills
+
+Every customer solution starts with **00-solution-orchestrator** to select required skills:
+
+**Foundation:**
+- 00 — Solution orchestrator
+- 01 — Business problem framing
+- 02 — Value & KPI design
+- 03 — Demo & meeting design
+- 04 — Solution architecture
+
+**Data:**
+- 05 — Data source assessment
+- 06 — Data integration / CDC
+- 07 — Batch data engineering
+- 08 — Streaming / real-time
+- 09 — Governance & security
+- 10 — Platform interoperability
+
+**Serving:**
+- 11 — BI / semantic analytics
+- 12 — ML / predictive / optimization
+- 13 — GenAI / agents / RAG
+- 14 — Data sharing / clean rooms
+- 15 — Operational serving / apps
+
+**Operations:**
+- 16 — Observability / FinOps / performance
+- 17 — Experimentation / value realization
+- 18 — Synthetic / demo data
+
+See `SKILL_SELECTION_MATRIX.md` for routing guidance.
+
+## How the orchestrator works
 
 Every new customer solution begins with:
 
 `.assistant/skills/00-solution-orchestrator/SKILL.md`
 
-The orchestrator must determine:
+The orchestrator determines:
+1. Business outcome and KPI
+2. Target persona / decision / action
+3. Required capabilities (skills to invoke)
+4. Explicitly NOT required (skills to exclude with reasons)
+5. Data availability and latency
+6. Proof strategy (what to show)
+7. Next step
 
-1. business outcome;
-2. target persona/decision/action;
-3. primary KPI and value mechanism;
-4. required solution patterns;
-5. minimum data needed;
-6. skills to invoke;
-7. skills explicitly not required;
-8. architecture/proof assets;
-9. unknowns to validate;
-10. recommended sequence.
-
-It must **never** assume ingestion, medallion layers, ML, GenAI, or a dashboard without justification.
+**Key principle:** Explicitly state what is NOT needed to avoid forcing unnecessary complexity.
 
 ## Quick start
 
-Validate the repository:
-
+**Validate the repository:**
 ```bash
 python3 scripts/validate_toolkit.py
 ```
 
-Install/copy skills into a local assistant skills directory:
-
+**Install skills locally:**
 ```bash
 ./scripts/setup.sh
 ```
 
-Preview promotion to a Databricks workspace checkout:
-
+**Promote to Databricks workspace (preview):**
 ```bash
 ./scripts/promote_skills.sh --target /Workspace/.assistant/skills/
 ```
 
-Apply promotion:
-
+**Apply promotion:**
 ```bash
 ./scripts/promote_skills.sh --target /Workspace/.assistant/skills/ --apply
 ```
 
-Apply and remove target skills not present in this repo:
-
+**Apply and prune:**
 ```bash
 ./scripts/promote_skills.sh --target /Workspace/.assistant/skills/ --apply --prune
 ```
 
 See `docs/INSTALL_DATABRICKS.md` and `docs/PROMOTION.md` for details.
 
-## Solution Patterns (New in 2.1.0)
+## Examples
 
-The toolkit now includes a **solution pattern layer** between business use cases and specialist skills:
+See `examples/retail/` for worked examples including:
+- Predictive product availability (ASDA case study)
+- Retail media measurement
+- Customer 360
 
-* **10 reusable patterns** — Predictive ML, Real-Time, BI, GenAI, CDC, Interoperability, Customer 360, Agentic Workflow, Data Sharing, Optimization
-* **Machine-readable routing** — `.assistant/solution-patterns.yaml` defines skill compositions
-* **Pattern library** — `solution-patterns/` contains detailed guides for each pattern
-* **Structured contracts** — Orchestrator outputs YAML contracts with justifications
+## Contributing
 
-See [`solution-patterns/README.md`](solution-patterns/README.md) for details.
+See `CONTRIBUTING.md` for contribution standards.
 
-**Example:** A "Predictive ML" pattern typically requires business framing, value design, architecture, ML, and experimentation skills — but explicitly excludes GenAI, CDC, and streaming unless requirements justify them.
+## License
 
-The orchestrator uses patterns to avoid forcing unnecessary complexity (like Bronze/Silver/Gold on every use case).
+See `LICENSE` for details.

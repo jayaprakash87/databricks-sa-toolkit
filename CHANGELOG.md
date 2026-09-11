@@ -5,70 +5,48 @@ All notable changes to databricks-sa-toolkit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0] - 2025-01-XX
+## [2.2.0] - 2025-01-XX
 
-### Added - Core Orchestration & Routing Foundation
+### Changed - Radical Simplification
 
-#### Solution Pattern Layer
-* **Machine-readable pattern routing** - `.assistant/solution-patterns.yaml` with 10 reusable solution patterns
-* **Pattern library** - `solution-patterns/` directory with 6 detailed pattern guides:
-  * Predictive ML
-  * Real-Time Operational Intelligence
-  * BI / Decision Intelligence
-  * GenAI Knowledge Assistant
-  * Data Integration / CDC Modernization
-  * Platform Interoperability
-* **Pattern-aware orchestration** - Orchestrator uses patterns to determine skill composition
-* **Activation & exclusion rules** - Conditional skill selection and explicit exclusions
+**Philosophy:** Practical depth in specialist skills, not framework complexity.
 
-#### Structured Orchestration Contracts
-* **YAML contract schema** - Standardized Solution Orchestration Contract format
-* **Explicit anti-patterns** - Never force unnecessary ingestion, transformation, medallion, streaming, ML, or GenAI
-* **Decision documentation** - Contract includes rationale for included AND excluded capabilities
-* **Machine-readable output** - Structured contracts can feed downstream automation
+#### Removed over-engineering (~1,800 lines)
+* Removed `.assistant/solution-patterns.yaml` (600+ lines of duplication)
+* Removed `solution-patterns/` directory (duplicated skill content)
+* Removed `contract-schema.yaml` (12KB unnecessary schema)
+* Removed `TEST_ORCHESTRATION.md`, `MANIFEST.json`, `INDEX.md`
+* Removed `docs/TROUBLESHOOTING.md`, `docs/TESTING.md`, `docs/VERSIONING.md`, `docs/ARCHITECTURE.md`
 
-#### Enhanced Validation
-* **Comprehensive structure checks** - Skill sections (required + recommended), MANIFEST consistency
-* **Cross-reference validation** - Skill IDs, pattern references, VERSION alignment
-* **Release hygiene checks** - Detect temporary files, invalid references
-* **Better error reporting** - Clear errors vs warnings with detailed messages
+#### Simplified core files
+* **00-solution-orchestrator**: 267 → 95 lines
+  * Simple summary format (no giant YAML contracts)
+  * References `SKILL_SELECTION_MATRIX.md` as single routing source
+* **AGENTS.md**: 119 → 62 lines (behavioral rules only)
+* **CONTRIBUTING.md**: 123 → 79 lines (removed stale references)
+* **validator**: 327 → 111 lines (repo health checks, not ontology validation)
+* **README.md**: Simplified to 5-minute read
 
-#### Hardened Promotion
-* **Pre-promotion validation** - Automatic `validate_toolkit.py` run before promotion
-* **Diff-based promotion** - Checksum comparison to detect actual changes
-* **Detailed dry-run reports** - Show skills to add/update/unchanged/remove
-* **Safe prune operations** - Explicit confirmation required for skill deletion
-* **Better progress reporting** - Clear summary of promotion actions
+#### Strengthened specialist skills
+* **11-bi-semantic-analytics**: 22 → 140 lines
+  * Decision tree: dashboard vs Genie vs Power BI integration
+  * Semantic layer options, performance/security patterns
+* **13-genai-agents-rag**: 24 → 175 lines
+  * Pattern selection (conversational BI, RAG, agent, prompt+LLM)
+  * Retrieval patterns, evaluation, grounding, cost/latency guidance
+* **14-data-sharing-cleanrooms**: 16 → 155 lines
+  * Delta Sharing vs clean room decision tree
+  * Privacy patterns, join keys, audit/revocation
+* **06-data-integration-cdc**: 26 → 110 lines
+  * CDC vs batch decision tree, pattern comparison matrix
 
-### Changed
+**Net change:** -2,743 lines (20 files: -3,412 / +669)
 
-#### 00-solution-orchestrator Skill
-* **Complete rewrite** - Now produces structured YAML contracts instead of prose
-* **Explicit decision rules** - 15 mandatory questions the orchestrator must answer
-* **Anti-pattern guidance** - Explicit "never" and "always" rules
-* **Method section** - Step-by-step orchestration workflow
-* **Contract template** - Complete YAML schema with all required fields
+---
 
-### Testing
-* **3 test use cases** - Demonstrating orchestrator produces different paths:
-  * Test A: Predictive Availability (ML, batch, partial medallion)
-  * Test B: Executive KPI Copilot (GenAI, no ingestion, no transformation)
-  * Test C: CDC Modernization (CDC, change history, full medallion)
-* **Anti-pattern validation** - Confirms orchestrator avoids forcing unnecessary complexity
+## [2.1.0] - 2025-01-XX (Experimental - superseded by 2.2.0)
 
-### Documentation
-* **solution-patterns/README.md** - Pattern library usage guide
-* **TEST_ORCHESTRATION.md** - Test cases with expected vs actual orchestration
-* **Updated README.md** - Documents new solution pattern layer
-* **Updated TESTING.md** - Already included validation levels and checklists
-
-### Validation Status
-* ✅ All required skill sections present (19/19 skills)
-* ⚠️ 4 skills missing recommended sections (acceptable)
-* ✅ MANIFEST.json valid and aligned with directories
-* ✅ VERSION consistent across files
-* ✅ All cross-references valid
-* ✅ No release hygiene issues
+Introduced solution pattern layer and structured contracts. Retrospectively determined to be over-engineered. Replaced by radical simplification in 2.2.0.
 
 ---
 
