@@ -101,8 +101,7 @@ Decision/action: <what changes>
 KPI: <metric: baseline → target>
 
 ## REQUIRED CAPABILITIES
-- 01, 04 (always)
-- <other skills with brief reason>
+- <selected skills and reasons>
 
 NOT required:
 - <skill>: <why not needed>

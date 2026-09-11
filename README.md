@@ -115,15 +115,8 @@ See `docs/INSTALL_DATABRICKS.md` and `docs/PROMOTION.md` for details.
 
 ## Examples
 
-See `examples/retail/` for worked examples including:
-- Predictive product availability (ASDA case study)
-- Retail media measurement
-- Customer 360
+See `examples/retail/asda_predictive_availability.md` for a worked retail analytics example.
 
 ## Contributing
 
 See `CONTRIBUTING.md` for contribution standards.
-
-## License
-
-See `LICENSE` for details.

@@ -10,6 +10,7 @@ rm -f "$ZIP"
 (
   cd "$ROOT/.."
   zip -qr "$ZIP" "$(basename "$ROOT")" \
-    -x '*/dist/*' '*/.git/*' '*/__pycache__/*' '*.pyc'
+    -x '*/dist/*' '*/.git/*' '*/__pycache__/*' '*.pyc' \
+       '*/.databricks_sync' '*/download/*' '*/.DS_Store' '*.zip'
 )
 echo "$ZIP"
