@@ -1,0 +1,39 @@
+scenario: regulatory-sharing
+description: >
+  Governance-led sharing with a hard compliance boundary. Data exists and is
+  certified; the capability is controlled, auditable delivery — not analytics or AI.
+must_select:
+  - skill: business-problem-framing
+    reason: Fines for late/incorrect submissions define the outcome and stakes
+  - skill: solution-architecture
+    reason: Submission pipeline, schema mapping, and 7-year reproducibility design
+  - skill: governance-security
+    reason: Lineage, auditability, and time-boxed access are the core requirements
+  - skill: data-sharing-cleanrooms
+    reason: Controlled external delivery with revocation is the central capability
+must_exclude:
+  - skill: ml-predictive-optimization
+    reason: Compliance delivery, no prediction in scope
+  - skill: genai-agents-rag
+    reason: No language understanding requirement
+  - skill: streaming-realtime
+    reason: Quarterly cadence
+  - skill: data-integration-cdc
+    reason: Claims data already curated and certified; no new integration
+  - skill: batch-data-engineering
+    reason: Only schema mapping of certified data; no new transformation estate
+  - skill: bi-semantic-analytics
+    reason: Regulator consumes structured submissions, not dashboards
+conditional:
+  - skill: platform-interoperability
+    reason: Only if the regulator's secured exchange requires a specific platform bridge
+traps:
+  - rebuilding certified actuarial data instead of mapping it
+  - adding analytics/AI to a pure compliance-delivery scope
+architecture_characteristics:
+  - regulator-schema mapping over certified curated data
+  - immutable submission snapshots reproducible for seven years
+  - time-boxed, auditable, revocable access
+expected_artifacts:
+  - solution blueprint
+  - governance/audit model

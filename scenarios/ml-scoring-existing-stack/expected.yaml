@@ -1,0 +1,42 @@
+scenario: ml-scoring-existing-stack
+description: >
+  Minimal footprint: an existing model's scores delivered into an existing
+  SaaS workflow, with measured impact. Tests that no data estate, BI layer,
+  or AI expansion gets attached.
+must_select:
+  - skill: business-problem-framing
+    reason: Scores arriving after triage is the framed problem
+  - skill: value-and-kpi-design
+    reason: Review-before-payout rate and fraud value per hour need baselines
+  - skill: ml-predictive-optimization
+    reason: Serving the existing model at claim-registration latency is the core work
+  - skill: operational-serving-apps
+    reason: Scores must land in the case-management SaaS via REST/webhooks
+  - skill: platform-interoperability
+    reason: Integration boundary with the commercial SaaS and its APIs
+  - skill: experimentation-value-realization
+    reason: Fraud lead explicitly wants measured, not assumed, impact
+must_exclude:
+  - skill: data-integration-cdc
+    reason: Claims pipeline owned by another team and out of scope
+  - skill: batch-data-engineering
+    reason: Curated tables exist and are out of scope; no new transformation estate
+  - skill: bi-semantic-analytics
+    reason: Investigators will not use another screen; no dashboard consumption
+  - skill: genai-agents-rag
+    reason: No language understanding requirement
+  - skill: streaming-realtime
+    reason: Claim-registration events trigger scoring via webhook; no stream processing estate needed
+conditional:
+  - skill: governance-security
+    reason: Scoring uses already-governed tables; needed only if score delivery adds new access paths
+traps:
+  - rebuilding the claims pipeline that is explicitly out of scope
+  - adding an investigator dashboard nobody will open
+architecture_characteristics:
+  - model serving triggered at claim registration
+  - scores pushed into case-management via vendor REST/webhooks
+  - before/after measurement on review-before-payout rate
+expected_artifacts:
+  - solution blueprint
+  - value hypothesis

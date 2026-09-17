@@ -1,0 +1,28 @@
+scenario: fabric-powerbi-interop
+captured: '2026-09-17'
+method: initial capture from expected.yaml; regenerate via orchestrator agent runs
+selection:
+  selected:
+  - skill: business-problem-framing
+    reason: Conflicting figures from unmanaged copies is the framed problem
+  - skill: solution-architecture
+    reason: Coexistence topology across Databricks, Power BI, and future Fabric
+  - skill: platform-interoperability
+    reason: Power BI/Fabric consuming governed Databricks data is the core capability
+  - skill: bi-semantic-analytics
+    reason: Semantic model strategy (DirectQuery/Direct Lake vs import) with the BI team
+  - skill: governance-security
+    reason: One governed copy with consistent access control across tools
+  excluded:
+  - skill: data-integration-cdc
+    reason: No new sources; the problem is consumption architecture, not ingestion
+  - skill: batch-data-engineering
+    reason: Existing engineering estate stays; no rebuild program will be approved
+  - skill: ml-predictive-optimization
+    reason: No prediction requirement
+  - skill: genai-agents-rag
+    reason: No language understanding requirement
+  - skill: streaming-realtime
+    reason: Reporting workloads; no event latency requirement
+  - skill: data-sharing-cleanrooms
+    reason: Internal tool coexistence, not cross-org collaboration

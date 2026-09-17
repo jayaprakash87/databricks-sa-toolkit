@@ -1,0 +1,44 @@
+scenario: customer-360
+description: >
+  Scope discipline under executive sponsorship: a daily unified view with
+  entitlements. Attached AI initiatives (churn, offers, chatbot) are traps
+  until the foundation exists.
+must_select:
+  - skill: business-problem-framing
+    reason: Fragmented views and hold-time are the framed problem; scope is the view
+  - skill: value-and-kpi-design
+    reason: Hold time and RM productivity KPIs need baselines
+  - skill: solution-architecture
+    reason: Entity resolution, daily refresh, and entitlement-aware serving
+  - skill: data-source-assessment
+    reason: Four nightly extracts with known quality issues need assessment
+  - skill: batch-data-engineering
+    reason: Nightly file integration, dedup, and entity resolution are batch workloads
+  - skill: governance-security
+    reason: Banker entitlements (see only authorized customers) are a hard requirement
+  - skill: bi-semantic-analytics
+    reason: Unified customer view consumed by RMs and branch staff
+must_exclude:
+  - skill: genai-agents-rag
+    reason: Lobbied chatbot is out of the COO's stated scope; no foundation yet
+  - skill: ml-predictive-optimization
+    reason: Churn/next-best-offer are attached initiatives, not the sponsored scope
+  - skill: streaming-realtime
+    reason: Daily refresh is the stated requirement
+  - skill: data-integration-cdc
+    reason: Nightly file extracts exist; no operational change capture requested
+  - skill: data-sharing-cleanrooms
+    reason: No cross-org collaboration
+conditional:
+  - skill: operational-serving-apps
+    reason: Only if the unified view must embed into CRM/contact-center tooling rather than analytics access
+traps:
+  - accepting scope creep (churn model, offer engine, chatbot) under executive enthusiasm
+  - converting nightly files to CDC/streaming without a latency requirement
+architecture_characteristics:
+  - entity resolution with survivorship rules across four systems
+  - row-level entitlements matching banker authorization
+  - daily batch refresh from existing extracts
+expected_artifacts:
+  - solution blueprint
+  - business problem brief (scope boundaries explicit)

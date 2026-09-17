@@ -1,0 +1,47 @@
+scenario: predictive-availability
+description: >
+  Conditionality reasoning: ingestion/streaming depend on unverified freshness
+  facts. ML justified by a ranking decision; consumption is an operational
+  task list, not dashboards.
+must_select:
+  - skill: business-problem-framing
+    reason: Stock-out revenue loss and gap-scan labor are the framed problem
+  - skill: value-and-kpi-design
+    reason: Availability uplift KPI with existing 3% baseline
+  - skill: solution-architecture
+    reason: Freshness-dependent design with operational delivery path
+  - skill: data-source-assessment
+    reason: Actual freshness of curated POS/inventory tables is unknown and decisive
+  - skill: ml-predictive-optimization
+    reason: Ranking stores by predicted stock-out risk is a prediction problem
+  - skill: operational-serving-apps
+    reason: Output must land in the task app field staff already use
+  - skill: experimentation-value-realization
+    reason: Availability uplift must be measured store-vs-control before rollout
+  - skill: demo-and-meeting-design
+    reason: Leadership burned by dashboard-ware; demo must show the manager decision
+must_exclude:
+  - skill: genai-agents-rag
+    reason: No language understanding requirement; output is a ranked task list
+  - skill: bi-semantic-analytics
+    reason: Dashboards explicitly distrusted; consumption is the task app
+  - skill: data-sharing-cleanrooms
+    reason: No cross-org collaboration
+conditional:
+  - skill: data-integration-cdc
+    reason: Only if source assessment shows curated tables miss morning freshness needs
+  - skill: streaming-realtime
+    reason: Only if the decision cadence tightens to intraday replenishment
+  - skill: batch-data-engineering
+    reason: Only if feature preparation exceeds what curated tables provide
+traps:
+  - forcing medallion re-ingestion when curated tables may already be fresh enough
+  - shipping a dashboard when the org explicitly distrusts dashboards
+architecture_characteristics:
+  - freshness verified before any ingestion decision
+  - morning batch scoring into existing task app
+  - store-vs-control uplift measurement
+expected_artifacts:
+  - solution blueprint
+  - value hypothesis
+  - demo plan

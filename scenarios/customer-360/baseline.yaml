@@ -1,0 +1,30 @@
+scenario: customer-360
+captured: '2026-09-17'
+method: initial capture from expected.yaml; regenerate via orchestrator agent runs
+selection:
+  selected:
+  - skill: business-problem-framing
+    reason: Fragmented views and hold-time are the framed problem; scope is the view
+  - skill: value-and-kpi-design
+    reason: Hold time and RM productivity KPIs need baselines
+  - skill: solution-architecture
+    reason: Entity resolution, daily refresh, and entitlement-aware serving
+  - skill: data-source-assessment
+    reason: Four nightly extracts with known quality issues need assessment
+  - skill: batch-data-engineering
+    reason: Nightly file integration, dedup, and entity resolution are batch workloads
+  - skill: governance-security
+    reason: Banker entitlements (see only authorized customers) are a hard requirement
+  - skill: bi-semantic-analytics
+    reason: Unified customer view consumed by RMs and branch staff
+  excluded:
+  - skill: genai-agents-rag
+    reason: Lobbied chatbot is out of the COO's stated scope; no foundation yet
+  - skill: ml-predictive-optimization
+    reason: Churn/next-best-offer are attached initiatives, not the sponsored scope
+  - skill: streaming-realtime
+    reason: Daily refresh is the stated requirement
+  - skill: data-integration-cdc
+    reason: Nightly file extracts exist; no operational change capture requested
+  - skill: data-sharing-cleanrooms
+    reason: No cross-org collaboration
