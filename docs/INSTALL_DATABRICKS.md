@@ -1,8 +1,13 @@
 # Install / Promote Skills for Databricks Workspace Use
 
-The repository stores canonical skills under `.assistant/skills/`.
+There are two distinct installation paths:
 
-The historical Databricks workspace convention used by this toolkit is:
+| You want to… | Use |
+|---|---|
+| Give skills to a coding agent (Claude Code, Copilot, Genie) on your machine or in a repo | `sa-kit install --agent …` — see the [README](../README.md#installation) |
+| Publish skills into a Databricks workspace for shared use | `scripts/promote_skills.sh` — this document |
+
+The repository stores canonical skills under `.assistant/skills/`. The Databricks workspace convention used by this toolkit is:
 
 `/Workspace/.assistant/skills/`
 

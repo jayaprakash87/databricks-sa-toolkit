@@ -7,8 +7,8 @@ Changes should improve the toolkit as a reusable SA system, not hard-code one cu
 ## Adding a skill
 
 1. Confirm the capability is not already covered by an existing skill.
-2. Create `.assistant/skills/<NN-name>/SKILL.md`.
-3. Follow standard skill structure:
+2. Scaffold it: `sa-kit skill create <name> --id <NN> --category <foundation|data|serving|operations>`.
+3. Fill in the standard skill structure:
    * **Purpose** - What this skill does
    * **Use when** - When to invoke this skill
    * **Do not use when** - When NOT to use this skill
@@ -18,8 +18,8 @@ Changes should improve the toolkit as a reusable SA system, not hard-code one cu
    * **Anti-patterns** - Common mistakes
    * **Validation checklist** - Success criteria
    * **Exit criteria** - When this skill is complete
-4. Update `SKILL_SELECTION_MATRIX.md` if routing changes.
-5. Add or update an example/template if appropriate.
+4. Regenerate the routing table: `sa-kit matrix` (never hand-edit the generated block).
+5. Add or update an example/template if appropriate; consider a reference scenario (`sa-kit scenario create`).
 6. Run `sa-kit validate` (or `python3 scripts/sakit.py validate`).
 7. Add a `CHANGELOG.md` entry.
 8. Update `VERSION` if warranted.
@@ -30,8 +30,8 @@ Changes should improve the toolkit as a reusable SA system, not hard-code one cu
 2. Keep skills concise and actionable (~100-150 lines ideal).
 3. Prefer decision trees, comparison matrices, and checklists over prose.
 4. Include anti-patterns explicitly.
-5. Update `SKILL_SELECTION_MATRIX.md` if routing logic changes.
-6. Run validator before committing.
+5. If frontmatter routing fields change, run `sa-kit matrix`.
+6. Run `sa-kit validate` before committing.
 7. Document change in `CHANGELOG.md`.
 
 ## Changing orchestrator behavior
@@ -71,8 +71,11 @@ Avoid:
 
 Always run before committing:
 ```bash
-sa-kit validate           # or: python3 scripts/sakit.py validate
+python3 -m pytest tests/ -q   # unit tests (CLI, routing lint, scoring, artifacts)
+sa-kit validate               # or: python3 scripts/sakit.py validate
 ```
+
+Both run in CI on every push and pull request; a failing check blocks merge.
 
 For promotion testing:
 ```bash

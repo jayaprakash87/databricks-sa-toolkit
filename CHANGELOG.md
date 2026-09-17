@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **`scripts/` reduced to one Python file**: `scripts/sakit.py`, a zero-install
   wrapper around the full CLI for CI/contributors without `pip install`.
 * **CI collapsed from three jobs to one**: tests + `sa-kit validate` + smoke tests.
+* **Documentation rewritten for adoption**: README restructured around persona,
+  value proposition, installation, and a first-engagement walkthrough with a
+  CLI reference; CONTRIBUTING/INSTALL/RELEASE aligned to the consolidated CLI.
 
 ### Removed
 
