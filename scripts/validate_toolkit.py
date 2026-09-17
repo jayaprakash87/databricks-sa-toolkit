@@ -2,10 +2,13 @@
 """
 Databricks SA Toolkit Validation
 
-Validates repository health: skill structure, required files, and basic hygiene.
+Validates repository health: skill structure, frontmatter schema, required files, and basic hygiene.
 """
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import skill_registry
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS_DIR = ROOT / ".assistant" / "skills"
@@ -60,6 +63,26 @@ def check_skills():
             if section not in content:
                 warnings.append(f"{skill_name}/SKILL.md: Missing recommended section {section}")
 
+def check_frontmatter():
+    """Validate frontmatter schema and cross-skill graph consistency."""
+    if not SKILLS_DIR.is_dir():
+        return
+
+    skills = skill_registry.load_skills(SKILLS_DIR)
+    all_names = {e["meta"]["name"] for e in skills.values() if e["meta"] and "name" in e["meta"]}
+
+    for dir_name, entry in skills.items():
+        if entry["error"]:
+            errors.append(f"{dir_name}/SKILL.md: {entry['error']}")
+            continue
+        errs, warns = skill_registry.validate_meta(dir_name, entry["meta"], all_names)
+        errors.extend(f"{dir_name}/SKILL.md: {e}" for e in errs)
+        warnings.extend(f"{dir_name}/SKILL.md: {w}" for w in warns)
+
+    errs, warns = skill_registry.validate_graph(skills)
+    errors.extend(f"skill graph: {e}" for e in errs)
+    warnings.extend(f"skill graph: {w}" for w in warns)
+
 def check_version():
     """Check VERSION file exists."""
     if not VERSION_FILE.exists():
@@ -81,6 +104,7 @@ def main():
     print()
     
     check_skills()
+    check_frontmatter()
     check_version()
     check_release_hygiene()
     

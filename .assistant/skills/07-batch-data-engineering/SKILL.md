@@ -1,3 +1,17 @@
+---
+name: batch-data-engineering
+id: 7
+version: 1.0.0
+category: data
+description: "Build reliable batch transformations and analytical data products when real-time processing is unnecessary."
+triggers: [batch, etl, scheduled transformation, data products]
+requires: []
+suggests: [observability-finops-performance]
+alternatives: [data-integration-cdc, streaming-realtime]
+route_when: "Scheduled transformations"
+status: stable
+---
+
 # Skill: Batch Data Engineering
 
 ## Purpose

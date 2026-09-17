@@ -1,3 +1,17 @@
+---
+name: streaming-realtime
+id: 8
+version: 1.0.0
+category: data
+description: "Design event-driven or low-latency processing for use cases where decision value decays with time."
+triggers: [streaming, real-time, events, low latency]
+requires: [data-source-assessment]
+suggests: [observability-finops-performance]
+alternatives: [batch-data-engineering]
+route_when: "Seconds/minutes latency"
+status: stable
+---
+
 # Skill: Streaming & Real-Time Intelligence
 
 ## Purpose

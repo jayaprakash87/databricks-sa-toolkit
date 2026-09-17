@@ -1,3 +1,17 @@
+---
+name: experimentation-value-realization
+id: 17
+version: 1.0.0
+category: operations
+description: "Prove whether the solution changes business outcomes and quantify value credibly."
+triggers: [experiment, a/b test, value realization, business lift]
+requires: [value-and-kpi-design]
+suggests: []
+alternatives: []
+route_when: "Need to prove business lift"
+status: stable
+---
+
 # Skill: Experimentation & Value Realization
 
 ## Purpose

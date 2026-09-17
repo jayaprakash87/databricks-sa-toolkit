@@ -1,3 +1,17 @@
+---
+name: operational-serving-apps
+id: 15
+version: 1.0.0
+category: serving
+description: "Deliver insights or AI outputs into an operational workflow rather than stopping at a table/model/dashboard."
+triggers: [operational app, serving, workflow integration, actions]
+requires: []
+suggests: [observability-finops-performance]
+alternatives: []
+route_when: "Need to push actions into workflow"
+status: stable
+---
+
 # Skill: Operational Serving & Apps
 
 ## Purpose

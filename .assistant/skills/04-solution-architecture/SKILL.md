@@ -1,3 +1,17 @@
+---
+name: solution-architecture
+id: 4
+version: 1.0.0
+category: foundation
+description: "Design the minimum architecture required to satisfy the use case while respecting the customer estate."
+triggers: [architecture, design, build vs buy, coexist, trade-offs]
+requires: [business-problem-framing]
+suggests: [value-and-kpi-design, platform-interoperability]
+alternatives: []
+route_when: "Architecture definition"
+status: stable
+---
+
 # Skill: Solution Architecture
 
 ## Purpose

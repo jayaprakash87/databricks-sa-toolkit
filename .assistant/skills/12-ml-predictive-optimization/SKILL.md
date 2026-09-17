@@ -1,3 +1,17 @@
+---
+name: ml-predictive-optimization
+id: 12
+version: 1.0.0
+category: serving
+description: "Use machine learning only when prediction, ranking, recommendation, forecasting, causal inference, or optimization materially improves the decision."
+triggers: [ml, prediction, forecasting, optimization, ranking, recommendation]
+requires: []
+suggests: [experimentation-value-realization, operational-serving-apps]
+alternatives: [bi-semantic-analytics, genai-agents-rag]
+route_when: "Prediction / forecasting / optimization"
+status: stable
+---
+
 # Skill: ML, Predictive & Optimization
 
 ## Purpose

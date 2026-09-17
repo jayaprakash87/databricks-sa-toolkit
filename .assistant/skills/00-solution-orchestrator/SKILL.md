@@ -1,3 +1,17 @@
+---
+name: solution-orchestrator
+id: 0
+version: 1.0.0
+category: foundation
+description: "Understand a customer business problem and select the specialist skills needed to solve it."
+triggers: [new use case, customer problem, solution design, skill selection]
+requires: []
+suggests: []
+alternatives: []
+route_when: "Every new customer use case (entry point)"
+status: stable
+---
+
 # Skill: Solution Orchestrator
 
 ## Purpose

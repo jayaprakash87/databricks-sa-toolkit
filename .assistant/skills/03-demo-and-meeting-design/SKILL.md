@@ -1,3 +1,17 @@
+---
+name: demo-and-meeting-design
+id: 3
+version: 1.0.0
+category: foundation
+description: "Turn a validated use-case concept into a customer-facing meeting and demo experience."
+triggers: [demo, meeting, workshop, executive briefing]
+requires: [business-problem-framing]
+suggests: [demo-data-synthetic-assets]
+alternatives: []
+route_when: "Customer meeting/demo"
+status: stable
+---
+
 # Skill: Demo & Meeting Design
 
 ## Purpose

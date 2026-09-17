@@ -1,3 +1,17 @@
+---
+name: business-problem-framing
+id: 1
+version: 1.0.0
+category: foundation
+description: "Convert a vague customer request into a measurable business problem and target user decision."
+triggers: [vague ask, problem framing, business outcome, discovery]
+requires: []
+suggests: [value-and-kpi-design]
+alternatives: []
+route_when: "Vague business ask"
+status: stable
+---
+
 # Skill: Business Problem Framing
 
 ## Purpose

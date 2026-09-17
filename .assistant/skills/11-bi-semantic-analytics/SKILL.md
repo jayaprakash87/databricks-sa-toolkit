@@ -1,3 +1,17 @@
+---
+name: bi-semantic-analytics
+id: 11
+version: 1.0.0
+category: serving
+description: "Deliver governed metrics, exploration, and dashboards when the core problem is analytical (not predictive)."
+triggers: [bi, dashboard, semantic layer, metrics, genie]
+requires: []
+suggests: [governance-security]
+alternatives: [ml-predictive-optimization, genai-agents-rag]
+route_when: "Dashboard / semantic metrics"
+status: stable
+---
+
 # Skill: BI, Semantic & Analytics
 
 ## Purpose

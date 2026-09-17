@@ -1,3 +1,17 @@
+---
+name: demo-data-synthetic-assets
+id: 18
+version: 1.0.0
+category: operations
+description: "Create realistic, internally consistent demo data and artifacts when customer data is unavailable or unsuitable."
+triggers: [synthetic data, demo data, sample data]
+requires: []
+suggests: []
+alternatives: []
+route_when: "No customer data for demo"
+status: stable
+---
+
 # Skill: Demo Data & Synthetic Assets
 
 ## Purpose

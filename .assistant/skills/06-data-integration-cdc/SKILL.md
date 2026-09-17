@@ -1,3 +1,17 @@
+---
+name: data-integration-cdc
+id: 6
+version: 1.0.0
+category: data
+description: "Integrate changing operational data where freshness and change semantics matter."
+triggers: [cdc, change data capture, replication, operational database]
+requires: [data-source-assessment]
+suggests: [governance-security]
+alternatives: [batch-data-engineering]
+route_when: "Operational DB changes / CDC"
+status: stable
+---
+
 # Skill: Data Integration & CDC
 
 ## Purpose

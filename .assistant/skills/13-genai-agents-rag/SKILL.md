@@ -1,3 +1,17 @@
+---
+name: genai-agents-rag
+id: 13
+version: 1.0.0
+category: serving
+description: "Design grounded generative AI experiences where language understanding, synthesis, reasoning, or tool-use is central."
+triggers: [genai, rag, agent, knowledge assistant, conversational]
+requires: []
+suggests: [governance-security]
+alternatives: [bi-semantic-analytics, ml-predictive-optimization]
+route_when: "Natural-language / RAG / agent"
+status: stable
+---
+
 # Skill: GenAI, RAG & Agents
 
 ## Purpose

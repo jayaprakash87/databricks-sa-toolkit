@@ -1,3 +1,17 @@
+---
+name: platform-interoperability
+id: 10
+version: 1.0.0
+category: data
+description: "Design coexistence between Databricks and customer platforms such as Fabric, Power BI, SAP, Snowflake, operational apps, or domain SaaS."
+triggers: [interoperability, fabric, power bi, snowflake, sap, coexistence]
+requires: []
+suggests: [governance-security]
+alternatives: []
+route_when: "Fabric/SAP/Snowflake/partner coexistence"
+status: stable
+---
+
 # Skill: Platform Interoperability
 
 ## Purpose

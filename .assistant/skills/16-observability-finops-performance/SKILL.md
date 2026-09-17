@@ -1,3 +1,17 @@
+---
+name: observability-finops-performance
+id: 16
+version: 1.0.0
+category: operations
+description: "Ensure production workloads are reliable, performant, and economically efficient."
+triggers: [observability, finops, cost, performance, reliability]
+requires: []
+suggests: []
+alternatives: []
+route_when: "Production performance/cost"
+status: stable
+---
+
 # Skill: Observability, FinOps & Performance
 
 ## Purpose

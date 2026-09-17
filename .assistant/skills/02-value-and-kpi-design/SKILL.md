@@ -1,3 +1,17 @@
+---
+name: value-and-kpi-design
+id: 2
+version: 1.0.0
+category: foundation
+description: "Define how business value will be measured before solution design begins."
+triggers: [roi, kpi, value model, business case]
+requires: [business-problem-framing]
+suggests: [experimentation-value-realization]
+alternatives: []
+route_when: "Need ROI/KPI model"
+status: stable
+---
+
 # Skill: Value & KPI Design
 
 ## Purpose

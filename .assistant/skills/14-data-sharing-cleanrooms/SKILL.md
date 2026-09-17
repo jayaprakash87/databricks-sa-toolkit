@@ -1,3 +1,17 @@
+---
+name: data-sharing-cleanrooms
+id: 14
+version: 1.0.0
+category: serving
+description: "Enable governed collaboration across organizational or partner boundaries without data duplication."
+triggers: [delta sharing, clean room, partner data, collaboration]
+requires: []
+suggests: [governance-security]
+alternatives: []
+route_when: "Partner collaboration / clean room"
+status: stable
+---
+
 # Skill: Data Sharing & Clean Rooms
 
 ## Purpose

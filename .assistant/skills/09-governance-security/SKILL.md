@@ -1,3 +1,17 @@
+---
+name: governance-security
+id: 9
+version: 1.0.0
+category: data
+description: "Apply governance, access, lineage, privacy, and security appropriate to the use case."
+triggers: [governance, security, pii, unity catalog, compliance, lineage]
+requires: []
+suggests: []
+alternatives: []
+route_when: "PII / governed enterprise assets"
+status: stable
+---
+
 # Skill: Governance & Security
 
 ## Purpose

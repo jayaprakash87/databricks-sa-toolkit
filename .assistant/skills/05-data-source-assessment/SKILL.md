@@ -1,3 +1,17 @@
+---
+name: data-source-assessment
+id: 5
+version: 1.0.0
+category: data
+description: "Determine what data actually exists, its fitness for the use case, and the minimum acquisition path."
+triggers: [data sources, data availability, data quality, acquisition]
+requires: []
+suggests: []
+alternatives: []
+route_when: "Unknown data sources"
+status: stable
+---
+
 # Skill: Data Source Assessment
 
 ## Purpose
