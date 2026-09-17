@@ -26,6 +26,7 @@ done
 
 [[ -d "$SOURCE" ]] || { echo "Missing source: $SOURCE" >&2; exit 1; }
 
+echo "Note: 'sa-kit install --agent genie|claude|copilot' is the preferred installer (pip install .)."
 echo "Source: $SOURCE"
 echo "Target: $TARGET"
 

@@ -5,6 +5,27 @@ All notable changes to databricks-sa-toolkit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-09-17
+
+### Added - SA Dev Kit Phase 1 (distribution & state)
+
+* **`src/sa_kit` package** (pip-installable, `sa-kit` CLI entry point):
+  * `sa-kit validate` — skill frontmatter + dependency-graph validation
+  * `sa-kit install --agent claude|copilot|genie --scope repo|user` with
+    `--dry-run` and `--uninstall` (manifest-based, path-traversal guarded)
+  * `sa-kit engagement init` — resumable engagement state with
+    facts/hypotheses/unknowns and selected/excluded skills
+  * `sa-kit validate --selection` — enforces valid skill names, non-empty
+    exclusions, no overlap; warns on unmet `requires` and co-selected
+    alternatives
+* CI `cli` job: install, validate, installer roundtrip, engagement gates
+
+### Changed
+
+* `scripts/skill_registry.py` is now a shim delegating to `sa_kit.registry`
+* `scripts/setup.sh` points to `sa-kit install` as the preferred installer
+* `engagements/` added to `.gitignore` (may contain customer context)
+
 ## [2.3.0] - 2026-02-14
 
 ### Added - SA Dev Kit Phase 0 (foundation hardening)

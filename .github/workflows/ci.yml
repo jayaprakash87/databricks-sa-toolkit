@@ -31,3 +31,33 @@ jobs:
           python-version: "3.11"
       - name: Scan for credentials and customer identifiers
         run: python3 scripts/security_scan.py
+
+  cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install sa-kit
+        run: pip install .
+      - name: Validate skills via CLI
+        run: sa-kit validate
+      - name: Installer dry run + install + uninstall roundtrip
+        run: |
+          mkdir /tmp/fake-repo
+          cd /tmp/fake-repo
+          export SA_KIT_ROOT=$GITHUB_WORKSPACE
+          sa-kit install --agent claude --dry-run
+          sa-kit install --agent claude
+          test -f .claude/skills/solution-orchestrator/SKILL.md
+          sa-kit install --agent claude --uninstall
+          test ! -d .claude/skills
+      - name: Engagement init + selection validation gates
+        run: |
+          cd /tmp
+          export SA_KIT_ROOT=$GITHUB_WORKSPACE
+          sa-kit engagement init ci-smoke
+          if sa-kit validate --selection engagements/ci-smoke/engagement.yaml; then
+            echo "empty selection should have failed" && exit 1
+          fi

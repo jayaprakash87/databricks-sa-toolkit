@@ -2,7 +2,7 @@
 
 Reusable **Databricks Solution Architect toolkit** for customer discovery, solution design, demos, value engineering, architecture, and production-readiness work.
 
-**Version:** 2.3.0  
+**Version:** 2.4.0  
 **Design:** use-case-first, capability-composed, Databricks-aware.
 
 ## Philosophy
@@ -23,11 +23,12 @@ Do not assume ingestion, medallion layers, ML, GenAI, or dashboards without just
 ```text
 databricks-sa-toolkit/
 ├── .assistant/skills/              # 19 specialist skills (machine-readable frontmatter)
+├── src/sa_kit/                     # pip-installable package: sa-kit CLI, installer, engagement state
 ├── scenarios/                      # Reference scenarios with expected selections/exclusions
 ├── templates/                      # Customer/SA artifact templates
 ├── examples/retail/                # Worked retail examples
 ├── scripts/                        # Setup, validation, matrix generation, security scan
-├── .github/workflows/              # CI: validation + security
+├── .github/workflows/              # CI: validation + security + CLI smoke tests
 ├── AGENTS.md                       # Agent behavioral rules
 ├── CONTRIBUTING.md                 # Contribution standards
 ├── CHANGELOG.md                    # Release history
@@ -88,6 +89,30 @@ The orchestrator determines:
 **Key principle:** Explicitly state what is NOT needed to avoid forcing unnecessary complexity.
 
 ## Quick start
+
+**Install the CLI:**
+```bash
+pip install .
+```
+
+**Install skills into your agent (from a customer/engagement repo):**
+```bash
+sa-kit install --agent claude              # .claude/skills/
+sa-kit install --agent copilot             # .github/skills/
+sa-kit install --agent genie --scope user  # ~/.assistant/skills/
+sa-kit install --agent claude --dry-run    # preview
+sa-kit install --agent claude --uninstall  # clean removal (manifest-based)
+```
+Set `SA_KIT_ROOT=/path/to/databricks-sa-toolkit` when running outside the toolkit checkout.
+
+**Start and validate an engagement:**
+```bash
+sa-kit engagement init acme-churn
+# ...fill customer_context and selection with the orchestrator...
+sa-kit validate --selection engagements/acme-churn/engagement.yaml
+```
+Selections must name valid skills and include explicit exclusions with reasons.
+`engagements/` is gitignored — it may contain customer context.
 
 **Validate the repository:**
 ```bash
