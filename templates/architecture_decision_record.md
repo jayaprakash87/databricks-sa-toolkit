@@ -4,11 +4,15 @@ requires_state: [customer_context]
 ---
 # Architecture Decision Record
 
-## Decision
-
 ## Context
 
+<!-- state: customer_context -->
+
+## Decision
+
 ## Options considered
+
+<!-- Agent: include the do-nothing / reuse-existing option explicitly. -->
 
 ## Selected option
 

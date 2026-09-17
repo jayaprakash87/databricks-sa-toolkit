@@ -1,7 +1,7 @@
 ---
 name: solution-orchestrator
 id: 0
-version: 1.0.0
+version: 1.1.0
 category: foundation
 description: "Understand a customer business problem and select the specialist skills needed to solve it."
 triggers: [new use case, customer problem, solution design, skill selection]
@@ -131,6 +131,27 @@ What should we show? <business value demo>
 ## NEXT STEP
 <immediate action>
 ```
+
+## Record the outcome (if sa-kit is available)
+
+When the repo has an engagement file (`engagements/<name>/engagement.yaml`,
+created with `sa-kit engagement init <name>`), persist your reasoning there
+instead of only replying in chat:
+
+1. Fill `customer_context`, `facts` (keep `verified` / `hypotheses` / `unknowns` separate), and `kpis`.
+2. Write the selection using frontmatter skill names, every entry with a reason:
+   ```yaml
+   selection:
+     selected:
+       - {skill: bi-semantic-analytics, reason: "..."}
+     excluded:
+       - {skill: genai-agents-rag, reason: "..."}
+   ```
+3. Checkpoint: `sa-kit validate --selection engagements/<name>/engagement.yaml`
+   — fix every finding it reports (missing prerequisites, undecided CDC/streaming/ML/GenAI,
+   undecided alternatives, weak reasons) before presenting the solution.
+4. Generate deliverables from the validated state, e.g.
+   `sa-kit artifact generate solution_blueprint --engagement engagements/<name>/engagement.yaml`.
 
 ## Anti-patterns
 

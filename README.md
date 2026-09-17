@@ -3,7 +3,7 @@
 **Give your AI agent the judgment of a senior Solution Architect.**
 
 [![CI](https://github.com/jayaprakash87/databricks-sa-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/jayaprakash87/databricks-sa-toolkit/actions/workflows/ci.yml)
-**Version 2.6.0** · 19 skills · works with Claude Code, GitHub Copilot, and Databricks Genie
+**Version 2.7.0** · 19 skills · works with Claude Code, GitHub Copilot, and Databricks Genie
 
 The SA Dev Kit is a set of composable **agent skills** plus a small **`sa-kit` CLI** that help Solution Architects discover, architect, prove, and communicate Databricks solutions — starting from the customer's business outcome, not from a reference architecture.
 

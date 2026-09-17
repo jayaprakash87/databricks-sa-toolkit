@@ -6,6 +6,8 @@ requires_state: [customer_context, kpis]
 
 ## Business outcome
 
+<!-- state: customer_context -->
+
 ## Persona / owner
 
 ## Decision or action to improve
@@ -14,12 +16,20 @@ requires_state: [customer_context, kpis]
 
 ## Primary KPI
 
+<!-- state: kpis -->
+
 ## Value mechanism
 
 ## Constraints
 
 ## Verified facts
 
+<!-- state: facts.verified -->
+
 ## Hypotheses
 
+<!-- state: facts.hypotheses -->
+
 ## Unknowns to validate
+
+<!-- state: facts.unknowns -->

@@ -4,7 +4,13 @@ requires_state: [customer_context, kpis]
 ---
 # Value Hypothesis
 
+## Context
+
+<!-- state: customer_context -->
+
 ## KPI baseline
+
+<!-- state: kpis -->
 
 ## Addressable population / revenue / cost base
 

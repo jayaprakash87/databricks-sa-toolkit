@@ -6,17 +6,35 @@ requires_state: [customer_context, selection.selected, selection.excluded, facts
 
 ## Use case
 
-## Required solution patterns
+<!-- state: customer_context -->
+
+**KPIs:**
+
+<!-- state: kpis -->
 
 ## Skills selected
 
+<!-- state: selection.selected -->
+
 ## Skills explicitly not required
 
-## Minimum data required
+<!-- state: selection.excluded -->
 
-## Target user experience / decision flow
+## Verified facts
+
+<!-- state: facts.verified -->
+
+## Hypotheses (unconfirmed)
+
+<!-- state: facts.hypotheses -->
+
+## Unknowns
+
+<!-- state: facts.unknowns -->
 
 ## Logical architecture
+
+<!-- Agent: describe the minimal architecture for the selected skills only; reference existing customer assets before proposing new components. -->
 
 ## Governance / security
 
@@ -24,4 +42,6 @@ requires_state: [customer_context, selection.selected, selection.excluded, facts
 
 ## Proof / demo assets
 
-## Unknowns
+## Next steps
+
+<!-- state: next_steps -->

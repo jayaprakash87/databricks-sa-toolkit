@@ -6,38 +6,35 @@ requires_state: [customer_context, selection]
 
 ## 1. Business outcome
 
+<!-- state: customer_context -->
+
 ## 2. Persona and decision/action
 
 ## 3. KPI and value hypothesis
 
+<!-- state: kpis -->
+
 ## 4. Current-state assumptions
 
-## 5. Solution pattern(s)
-- [ ] BI / analytics
-- [ ] Data integration / CDC
-- [ ] Batch engineering
-- [ ] Streaming
-- [ ] ML / optimization
-- [ ] GenAI / agents
-- [ ] Governance
-- [ ] Sharing / clean room
-- [ ] Operational serving
-- [ ] Interoperability
-- [ ] Observability / FinOps
+<!-- state: facts.hypotheses -->
 
-## 6. Selected skills and why
+## 5. Selected skills and why
 
-## 7. Skills explicitly not required and why
+<!-- state: selection.selected -->
 
-## 8. Minimum data required
+## 6. Skills explicitly not required and why
 
-## 9. Target user experience
+<!-- state: selection.excluded -->
 
-## 10. Architecture hypothesis
+## 7. Minimum data required
 
-## 11. Demo/proof assets
+## 8. Target user experience
 
-## 12. Measurement plan
+## 9. Architecture hypothesis
+
+## 10. Demo/proof assets
+
+## 11. Measurement plan
 
 ## 13. Unknowns to validate
 

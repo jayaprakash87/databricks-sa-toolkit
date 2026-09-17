@@ -5,6 +5,22 @@ All notable changes to databricks-sa-toolkit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2026-09-17
+
+### Changed - close the agent-CLI loop (dogfood findings)
+
+* **Orchestrator skill now records outcomes**: skill 00 instructs agents to
+  persist selection/exclusions/facts into `engagement.yaml`, checkpoint with
+  `sa-kit validate --selection`, and generate artifacts — previously the skill
+  and the CLI never referenced each other.
+* **Templates carry content**: 7 of 8 templates were heading-only skeletons;
+  all now have state markers so generated artifacts include the use case,
+  KPI table, selected/excluded skill tables, and facts/hypotheses/unknowns.
+* Verified end-to-end: engagement init → orchestrate → validate → score 1.0
+  against the bi-on-curated-delta scenario → generate blueprint/exclusion
+  register/demo plan. (The scorer caught a genuinely missed exclusion during
+  the dogfood — the guardrails work.)
+
 ## [2.6.0] - 2026-09-17
 
 ### Changed - consolidation (remove duplicate implementations)
