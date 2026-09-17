@@ -11,7 +11,7 @@ try:
 except ImportError:  # pragma: no cover
     yaml = None
 
-from . import registry
+from . import registry, routing
 
 TEMPLATE = """\
 engagement: {name}
@@ -44,7 +44,7 @@ def init(name, base_dir="engagements"):
 
 
 def _check_entries(entries, field, valid_names, errors):
-    names = []
+    named = {}
     for item in entries:
         if not isinstance(item, dict) or "skill" not in item:
             errors.append(f"{field}: each entry needs a 'skill' key")
@@ -53,8 +53,8 @@ def _check_entries(entries, field, valid_names, errors):
             errors.append(f"{field}: '{item['skill']}' has no reason")
         if item["skill"] not in valid_names:
             errors.append(f"{field}: unknown skill '{item['skill']}'")
-        names.append(item["skill"])
-    return names
+        named[item["skill"]] = item.get("reason", "")
+    return named
 
 
 def validate_selection(path):
@@ -74,7 +74,7 @@ def validate_selection(path):
     skills = registry.load_skills()
     valid_names = registry.skill_names(skills)
     metas = {e["meta"]["name"]: e["meta"] for e in skills.values() if e["meta"]}
-    errors, warnings = [], []
+    errors = []
 
     selection = data["selection"]
     selected = _check_entries(selection.get("selected") or [], "selected", valid_names, errors)
@@ -88,13 +88,11 @@ def validate_selection(path):
     if overlap:
         errors.append(f"skills both selected and excluded: {sorted(overlap)}")
 
-    for name in selected:
-        for req in metas.get(name, {}).get("requires", []):
-            if req not in selected:
-                warnings.append(f"'{name}' requires '{req}', which is not selected")
-        for alt in metas.get(name, {}).get("alternatives", []):
-            if alt in selected:
-                warnings.append(f"'{name}' and '{alt}' are alternatives — confirm both are needed")
+    warnings = []
+    if not errors:
+        for f in routing.lint_selection(selected, excluded, metas):
+            line = f"[{f['rule']}] {f['message']}"
+            (errors if f["level"] == "error" else warnings).append(line)
 
     for w in warnings:
         print(f"⚠️  {w}")

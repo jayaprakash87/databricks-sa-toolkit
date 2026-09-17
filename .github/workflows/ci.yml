@@ -40,7 +40,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install sa-kit
-        run: pip install .
+        run: pip install . pytest
+      - name: Unit tests
+        run: python3 -m pytest tests/ -q
       - name: Validate skills via CLI
         run: sa-kit validate
       - name: Installer dry run + install + uninstall roundtrip
