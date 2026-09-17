@@ -2,7 +2,7 @@
 
 Reusable **Databricks Solution Architect toolkit** for customer discovery, solution design, demos, value engineering, architecture, and production-readiness work.
 
-**Version:** 2.5.0  
+**Version:** 2.6.0  
 **Design:** use-case-first, capability-composed, Databricks-aware.
 
 ## Philosophy
@@ -23,12 +23,12 @@ Do not assume ingestion, medallion layers, ML, GenAI, or dashboards without just
 ```text
 databricks-sa-toolkit/
 ├── .assistant/skills/              # 19 specialist skills (machine-readable frontmatter)
-├── src/sa_kit/                     # pip-installable package: sa-kit CLI, installer, engagement state
+├── src/sa_kit/                     # pip-installable package: sa-kit CLI (validate, install, engagement, artifacts, scenarios)
 ├── scenarios/                      # Reference scenarios with expected selections/exclusions
 ├── templates/                      # Customer/SA artifact templates
 ├── examples/retail/                # Worked retail examples
-├── scripts/                        # Setup, validation, matrix generation, security scan
-├── .github/workflows/              # CI: validation + security + CLI smoke tests
+├── scripts/                        # sakit.py (zero-install CLI wrapper) + release/promotion shell scripts
+├── .github/workflows/              # CI: tests + sa-kit validate + smoke tests
 ├── AGENTS.md                       # Agent behavioral rules
 ├── CONTRIBUTING.md                 # Contribution standards
 ├── CHANGELOG.md                    # Release history
@@ -125,8 +125,8 @@ sa-kit artifact generate solution_blueprint --engagement ... --check-inputs
 
 **Score selections against reference scenarios:**
 ```bash
-sa-kit scenario report        # all baselines: exclusion precision/recall (CI-blocking)
 sa-kit scenario score --scenario scenarios/bi-on-curated-delta --selection my.yaml
+sa-kit scenario report        # scores captured baseline.yaml files, if any exist
 ```
 
 **Contribute:**
@@ -135,22 +135,16 @@ sa-kit skill create my-skill --id 19 --category operations
 sa-kit scenario create my-scenario
 ```
 
-**Validate the repository:**
+**Validate the repository** (structure, frontmatter, matrix freshness, scenarios, security scan — same command CI runs):
 ```bash
-python3 scripts/validate_toolkit.py
-python3 scripts/generate_matrix.py --check   # routing matrix freshness
-python3 scripts/check_scenarios.py --summary # reference scenarios
-python3 scripts/security_scan.py             # credential/identifier scan
+sa-kit validate
+# or without installing:
+python3 scripts/sakit.py validate
 ```
 
 **Regenerate the routing matrix after editing skill frontmatter:**
 ```bash
-python3 scripts/generate_matrix.py
-```
-
-**Install skills locally:**
-```bash
-./scripts/setup.sh
+sa-kit matrix
 ```
 
 **Promote to Databricks workspace (preview):**

@@ -6,39 +6,13 @@ from pathlib import Path
 import yaml
 
 from . import __version__
-from . import artifacts, engagement, installer, registry, scaffold, scoring
+from . import artifacts, checks, engagement, installer, registry, scaffold, scoring
 
 
 def cmd_validate(args):
     if args.selection:
         return engagement.validate_selection(args.selection)
-    try:
-        skills = registry.load_skills()
-    except FileNotFoundError as exc:
-        print(f"❌ {exc}")
-        return 1
-    all_names = registry.skill_names(skills)
-    errors, warnings = [], []
-    for dir_name, entry in skills.items():
-        if entry["error"]:
-            errors.append(f"{dir_name}: {entry['error']}")
-            continue
-        errs, warns = registry.validate_meta(dir_name, entry["meta"], all_names)
-        errors += [f"{dir_name}: {e}" for e in errs]
-        warnings += [f"{dir_name}: {w}" for w in warns]
-    errs, warns = registry.validate_graph(skills)
-    errors += errs
-    warnings += warns
-
-    for w in warnings:
-        print(f"⚠️  {w}")
-    if errors:
-        for e in errors:
-            print(f"❌ {e}")
-        print(f"\n❌ {len(errors)} error(s) across {len(skills)} skills.")
-        return 1
-    print(f"✅ {len(skills)} skills valid.")
-    return 0
+    return checks.run_all()
 
 
 def cmd_install(args):
@@ -117,9 +91,12 @@ def main(argv=None):
     parser.add_argument("--version", action="version", version=f"sa-kit {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_validate = sub.add_parser("validate", help="Validate skill frontmatter and dependency graph")
+    p_validate = sub.add_parser("validate", help="Run all repo checks: structure, frontmatter, matrix, scenarios, security")
     p_validate.add_argument("--selection", help="Validate an engagement.yaml skill selection instead")
     p_validate.set_defaults(func=cmd_validate)
+
+    p_matrix = sub.add_parser("matrix", help="Regenerate the SKILL_SELECTION_MATRIX.md routing table")
+    p_matrix.set_defaults(func=lambda a: checks.regenerate_matrix())
 
     p_eng = sub.add_parser("engagement", help="Manage engagement state")
     eng_sub = p_eng.add_subparsers(dest="engagement_command", required=True)

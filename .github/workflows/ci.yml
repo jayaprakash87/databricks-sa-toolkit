@@ -6,33 +6,7 @@ on:
   pull_request:
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Install dependencies
-        run: pip install pyyaml
-      - name: Validate toolkit structure and frontmatter
-        run: python3 scripts/validate_toolkit.py
-      - name: Check selection matrix freshness
-        run: python3 scripts/generate_matrix.py --check
-      - name: Validate reference scenarios
-        run: python3 scripts/check_scenarios.py --summary
-
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Scan for credentials and customer identifiers
-        run: python3 scripts/security_scan.py
-
-  cli:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -43,11 +17,9 @@ jobs:
         run: pip install . pytest
       - name: Unit tests
         run: python3 -m pytest tests/ -q
-      - name: Validate skills via CLI
+      - name: Validate repo (structure, frontmatter, matrix, scenarios, security)
         run: sa-kit validate
-      - name: Scenario baseline report (exclusion precision/recall)
-        run: sa-kit scenario report
-      - name: Installer dry run + install + uninstall roundtrip
+      - name: Installer install + uninstall roundtrip
         run: |
           mkdir /tmp/fake-repo
           cd /tmp/fake-repo

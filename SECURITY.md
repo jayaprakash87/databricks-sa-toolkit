@@ -15,8 +15,7 @@ This toolkit is used in customer-facing Solution Architecture work. Security rul
 
 ## Automated enforcement
 
-- `python3 scripts/security_scan.py` scans all tracked files for token patterns, private keys, and real workspace identifiers. It runs in CI on every push and pull request.
-- `python3 scripts/validate_toolkit.py` blocks stray release artifacts.
+- `sa-kit validate` scans all tracked files for token patterns, private keys, and real workspace identifiers (alongside structure checks). It runs in CI on every push and pull request.
 
 Run both before committing.
 

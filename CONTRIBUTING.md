@@ -20,7 +20,7 @@ Changes should improve the toolkit as a reusable SA system, not hard-code one cu
    * **Exit criteria** - When this skill is complete
 4. Update `SKILL_SELECTION_MATRIX.md` if routing changes.
 5. Add or update an example/template if appropriate.
-6. Run `python3 scripts/validate_toolkit.py`.
+6. Run `sa-kit validate` (or `python3 scripts/sakit.py validate`).
 7. Add a `CHANGELOG.md` entry.
 8. Update `VERSION` if warranted.
 
@@ -52,7 +52,7 @@ A PR should include:
 * Affected skills/files
 * Before/after behavior
 * Example use case
-* Validation output (`python3 scripts/validate_toolkit.py`)
+* Validation output (`sa-kit validate`)
 
 ## Style
 
@@ -71,7 +71,7 @@ Avoid:
 
 Always run before committing:
 ```bash
-python3 scripts/validate_toolkit.py
+sa-kit validate           # or: python3 scripts/sakit.py validate
 ```
 
 For promotion testing:

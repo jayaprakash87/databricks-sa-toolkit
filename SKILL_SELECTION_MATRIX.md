@@ -1,6 +1,6 @@
 # Skill Selection Matrix
 
-<!-- BEGIN GENERATED: do not edit by hand; run scripts/generate_matrix.py -->
+<!-- BEGIN GENERATED: do not edit by hand; run: sa-kit matrix -->
 Every solution starts with **00-solution-orchestrator**; it routes to the skills below.
 
 | Need / Use-case characteristic | Skill | Consider instead |

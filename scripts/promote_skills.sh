@@ -57,7 +57,7 @@ fi
 # Run validation before promotion (unless skipped)
 if [[ "$SKIP_VALIDATION" -eq 0 ]]; then
   echo "Running pre-promotion validation..."
-  if ! python3 "$ROOT/scripts/validate_toolkit.py"; then
+  if ! python3 "$ROOT/scripts/sakit.py" validate; then
     echo ""
     echo "❌ Validation failed. Fix errors before promotion."
     echo "   (Use --skip-validation to bypass, not recommended)"

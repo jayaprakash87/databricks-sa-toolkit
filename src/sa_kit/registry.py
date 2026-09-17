@@ -1,6 +1,6 @@
 """Skill frontmatter registry: loading, schema validation, graph validation.
 
-Canonical implementation; scripts/skill_registry.py delegates here.
+Canonical implementation used by the CLI and checks.
 """
 import os
 import re

@@ -5,6 +5,29 @@ All notable changes to databricks-sa-toolkit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-09-17
+
+### Changed - consolidation (remove duplicate implementations)
+
+* **One validation entry point.** `sa-kit validate` now runs everything:
+  structure, frontmatter/graph, matrix freshness, scenarios, security scan.
+  All checks live in `sa_kit.checks` — the single implementation.
+* **New `sa-kit matrix`** regenerates the routing table (replaces
+  `scripts/generate_matrix.py`).
+* **`scripts/` reduced to one Python file**: `scripts/sakit.py`, a zero-install
+  wrapper around the full CLI for CI/contributors without `pip install`.
+* **CI collapsed from three jobs to one**: tests + `sa-kit validate` + smoke tests.
+
+### Removed
+
+* `scripts/validate_toolkit.py`, `generate_matrix.py`, `check_scenarios.py`,
+  `security_scan.py`, `skill_registry.py` — duplicated logic now in `sa_kit`.
+* `scripts/setup.sh` — duplicated `sa-kit install --agent genie --scope user`.
+* All 16 `scenarios/*/baseline.yaml` files — they were literal copies of
+  `expected.yaml`, so CI was scoring expectations against themselves (always
+  1.0). `sa-kit scenario score`/`report` remain for scoring *real* selections
+  and future captured agent runs (see `scenarios/README.md`).
+
 ## [2.5.0] - 2026-09-17
 
 ### Added - SA Dev Kit Phase 2 (executable methodology)

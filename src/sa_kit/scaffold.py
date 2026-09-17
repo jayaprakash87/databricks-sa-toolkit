@@ -83,7 +83,7 @@ def create_skill(name, skill_id, category):
         encoding="utf-8",
     )
     print(f"Created {skill_dir / 'SKILL.md'} (status: experimental)")
-    print("Next: fill TODOs, run scripts/validate_toolkit.py and scripts/generate_matrix.py.")
+    print("Next: fill TODOs, then run: sa-kit matrix && sa-kit validate")
     return 0
 
 
@@ -101,5 +101,5 @@ def create_scenario(name):
     (scen_dir / "brief.md").write_text(BRIEF_TEMPLATE.format(title=title), encoding="utf-8")
     (scen_dir / "expected.yaml").write_text(EXPECTED_TEMPLATE.format(name=name), encoding="utf-8")
     print(f"Created {scen_dir}/ (brief.md, expected.yaml)")
-    print("Next: fill TODOs, run scripts/check_scenarios.py, capture baseline.yaml.")
+    print("Next: fill TODOs, then run: sa-kit validate")
     return 0

@@ -7,22 +7,20 @@ Benchmark scenarios for skill-selection behavior. Each scenario is a synthetic c
 ```
 scenarios/<name>/
 ├── brief.md          # synthetic customer problem (input to the orchestrator)
-├── expected.yaml     # must_select / must_exclude with reasons, traps, artifacts
-└── baseline.yaml     # captured selection scored in CI (exclusion precision/recall)
+└── expected.yaml     # must_select / must_exclude with reasons, traps, artifacts
 ```
 
 ## Usage
 
-Structural validation (runs in CI):
+Structural validation (part of `sa-kit validate`, runs in CI):
 
 ```bash
-python3 scripts/check_scenarios.py --summary
+sa-kit validate
 ```
 
-Score baselines against expectations (runs in CI, blocking):
+Score a real selection against a scenario:
 
 ```bash
-sa-kit scenario report                 # all baselines, floor 1.0
 sa-kit scenario score --scenario scenarios/bi-on-curated-delta --selection my-selection.yaml
 ```
 
@@ -31,9 +29,9 @@ Metrics: `exclusion_recall` (planted traps refused) and `exclusion_precision`
 Skills listed under `conditional` — and skills unmentioned by `expected.yaml` —
 are neutral and never scored.
 
-Baselines were initially captured from `expected.yaml`; regenerate them from
-real orchestrator agent runs when skills change routing behavior, and review
-score deltas in the PR.
+To benchmark orchestrator behavior over time, capture real agent runs as
+`baseline.yaml` (`selection: {selected: [...], excluded: [...]}`) inside a
+scenario directory and run `sa-kit scenario report`; review score deltas in PRs.
 
 ## Conventions
 

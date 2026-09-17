@@ -35,7 +35,7 @@ The promotion script is filesystem-oriented. In CI, mount/sync the desired works
 Always run:
 
 ```bash
-python3 scripts/validate_toolkit.py
+python3 scripts/sakit.py validate
 ```
 
 before promotion.

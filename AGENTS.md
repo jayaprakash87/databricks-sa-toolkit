@@ -49,7 +49,7 @@ See `SKILL_SELECTION_MATRIX.md` for skill routing guidance.
 - Do not create duplicate skill copies
 - Update `SKILL_SELECTION_MATRIX.md` if routing changes
 - Update `CHANGELOG.md` and `VERSION` for releases
-- Run `python3 scripts/validate_toolkit.py` before committing
+- Run `sa-kit validate` (or `python3 scripts/sakit.py validate`) before committing
 - Keep examples synthetic unless using approved public data
 
 ## Safety and confidentiality
