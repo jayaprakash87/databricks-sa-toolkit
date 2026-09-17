@@ -6,7 +6,7 @@ from pathlib import Path
 import yaml
 
 from . import __version__
-from . import artifacts, engagement, installer, registry, scoring
+from . import artifacts, engagement, installer, registry, scaffold, scoring
 
 
 def cmd_validate(args):
@@ -156,6 +156,17 @@ def main(argv=None):
     p_gen.add_argument("--out", help="Output directory (default: <engagement dir>/artifacts)")
     p_gen.add_argument("--check-inputs", action="store_true", help="Only verify required state is present")
     p_gen.set_defaults(func=cmd_artifact)
+
+    p_skill = sub.add_parser("skill", help="Contributor tools for skills")
+    skill_sub = p_skill.add_subparsers(dest="skill_command", required=True)
+    p_sc = skill_sub.add_parser("create", help="Scaffold a new skill")
+    p_sc.add_argument("name", help="kebab-case skill name")
+    p_sc.add_argument("--id", type=int, required=True, help="Numeric skill id (e.g. 19)")
+    p_sc.add_argument("--category", required=True, choices=sorted(registry.CATEGORIES))
+    p_sc.set_defaults(func=lambda a: scaffold.create_skill(a.name, a.id, a.category))
+    p_scen_create = scen_sub.add_parser("create", help="Scaffold a new reference scenario")
+    p_scen_create.add_argument("name", help="kebab-case scenario name")
+    p_scen_create.set_defaults(func=lambda a: scaffold.create_scenario(a.name))
 
     args = parser.parse_args(argv)
     return args.func(args)
