@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Validate toolkit structure and frontmatter
+        run: python3 scripts/validate_toolkit.py
+      - name: Check selection matrix freshness
+        run: python3 scripts/generate_matrix.py --check
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Scan for credentials and customer identifiers
+        run: python3 scripts/security_scan.py
