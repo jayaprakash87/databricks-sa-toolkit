@@ -1,3 +1,7 @@
+---
+template: value_hypothesis
+requires_state: [customer_context, kpis]
+---
 # Value Hypothesis
 
 ## KPI baseline

@@ -1,3 +1,7 @@
+---
+template: solution_blueprint
+requires_state: [customer_context, selection.selected, selection.excluded, facts]
+---
 # Solution Blueprint
 
 ## Use case

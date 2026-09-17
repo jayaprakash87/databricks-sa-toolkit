@@ -1,3 +1,7 @@
+---
+template: demo_plan
+requires_state: [customer_context, selection.selected]
+---
 # Demo Plan
 
 ## Audience

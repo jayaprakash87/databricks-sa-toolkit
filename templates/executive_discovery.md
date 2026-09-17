@@ -1,3 +1,7 @@
+---
+template: executive_discovery
+requires_state: [customer_context]
+---
 # Executive Discovery Guide
 
 ## Executive / persona

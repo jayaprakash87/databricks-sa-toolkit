@@ -1,3 +1,7 @@
+---
+template: business_problem_brief
+requires_state: [customer_context, kpis]
+---
 # Business Problem Brief
 
 ## Business outcome

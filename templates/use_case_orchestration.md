@@ -1,3 +1,7 @@
+---
+template: use_case_orchestration
+requires_state: [customer_context, selection]
+---
 # Use-Case Orchestration Template
 
 ## 1. Business outcome

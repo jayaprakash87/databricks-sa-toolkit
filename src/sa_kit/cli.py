@@ -6,7 +6,7 @@ from pathlib import Path
 import yaml
 
 from . import __version__
-from . import engagement, installer, registry, scoring
+from . import artifacts, engagement, installer, registry, scoring
 
 
 def cmd_validate(args):
@@ -103,6 +103,15 @@ def cmd_scenario_report(args):
     return 0
 
 
+def cmd_artifact(args):
+    try:
+        return artifacts.generate(args.template, args.engagement,
+                                  out_dir=args.out, check_only=args.check_inputs)
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"❌ {exc}")
+        return 1
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="sa-kit", description="Databricks SA Dev Kit")
     parser.add_argument("--version", action="version", version=f"sa-kit {__version__}")
@@ -138,6 +147,15 @@ def main(argv=None):
     p_report.add_argument("--dir", default="scenarios")
     p_report.add_argument("--floor", type=float, default=1.0)
     p_report.set_defaults(func=cmd_scenario_report)
+
+    p_art = sub.add_parser("artifact", help="Generate artifacts from engagement state")
+    art_sub = p_art.add_subparsers(dest="artifact_command", required=True)
+    p_gen = art_sub.add_parser("generate", help="Render a template against an engagement file")
+    p_gen.add_argument("template", help="Template name (file stem under templates/)")
+    p_gen.add_argument("--engagement", required=True, help="Path to engagement.yaml")
+    p_gen.add_argument("--out", help="Output directory (default: <engagement dir>/artifacts)")
+    p_gen.add_argument("--check-inputs", action="store_true", help="Only verify required state is present")
+    p_gen.set_defaults(func=cmd_artifact)
 
     args = parser.parse_args(argv)
     return args.func(args)
