@@ -2,7 +2,7 @@
 
 Reusable **Databricks Solution Architect toolkit** for customer discovery, solution design, demos, value engineering, architecture, and production-readiness work.
 
-**Version:** 2.2.0  
+**Version:** 2.3.0  
 **Design:** use-case-first, capability-composed, Databricks-aware.
 
 ## Philosophy
@@ -22,14 +22,17 @@ Do not assume ingestion, medallion layers, ML, GenAI, or dashboards without just
 
 ```text
 databricks-sa-toolkit/
-├── .assistant/skills/              # 19 specialist skills for agents
+├── .assistant/skills/              # 19 specialist skills (machine-readable frontmatter)
+├── scenarios/                      # Reference scenarios with expected selections/exclusions
 ├── templates/                      # Customer/SA artifact templates
 ├── examples/retail/                # Worked retail examples
-├── scripts/                        # Setup, validation, promotion
+├── scripts/                        # Setup, validation, matrix generation, security scan
+├── .github/workflows/              # CI: validation + security
 ├── AGENTS.md                       # Agent behavioral rules
 ├── CONTRIBUTING.md                 # Contribution standards
 ├── CHANGELOG.md                    # Release history
-├── SKILL_SELECTION_MATRIX.md       # Skill routing aid
+├── SECURITY.md                     # Security policy
+├── SKILL_SELECTION_MATRIX.md       # Skill routing aid (generated from frontmatter)
 ├── VERSION                         # Current semantic version
 └── README.md
 ```
@@ -89,6 +92,14 @@ The orchestrator determines:
 **Validate the repository:**
 ```bash
 python3 scripts/validate_toolkit.py
+python3 scripts/generate_matrix.py --check   # routing matrix freshness
+python3 scripts/check_scenarios.py --summary # reference scenarios
+python3 scripts/security_scan.py             # credential/identifier scan
+```
+
+**Regenerate the routing matrix after editing skill frontmatter:**
+```bash
+python3 scripts/generate_matrix.py
 ```
 
 **Install skills locally:**

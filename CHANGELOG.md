@@ -5,6 +5,39 @@ All notable changes to databricks-sa-toolkit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-02-14
+
+### Added - SA Dev Kit Phase 0 (foundation hardening)
+
+* **Machine-readable skill frontmatter** on all 19 skills: `name`, `id`, `version`,
+  `category`, `description`, `triggers`, `requires`, `suggests`, `alternatives`,
+  `route_when`, `status`
+* **`scripts/skill_registry.py`**: shared frontmatter loader with schema and
+  graph validation (semver, category/status enums, reference integrity,
+  alternatives symmetry)
+* **`scripts/generate_matrix.py`**: `SKILL_SELECTION_MATRIX.md` routing table is
+  now generated from skill frontmatter (`--check` mode for CI freshness)
+* **`scenarios/`**: 9 synthetic reference scenarios, each with `brief.md` and
+  `expected.yaml` declaring `must_select` **and** `must_exclude` — exclusion
+  discipline is now testable
+* **`scripts/check_scenarios.py`**: validates scenario schema, skill references,
+  and non-empty exclusions
+* **`scripts/security_scan.py`**: scans tracked files for credentials, tokens,
+  and real workspace identifiers
+* **`SECURITY.md`**: reporting process and confidentiality principles
+* **GitHub Actions CI** (`.github/workflows/ci.yml`): validation, matrix
+  freshness, scenario checks, and security scan on push/PR
+
+### Changed
+
+* `scripts/validate_toolkit.py` now also validates skill frontmatter via the
+  shared registry
+* `SKILL_SELECTION_MATRIX.md` routing table replaced with a generated block
+
+### Removed
+
+* Stray tracked `download` file (accidental `.gitignore` copy)
+
 ## [2.2.0] - 2025-01-XX
 
 ### Changed - Radical Simplification
