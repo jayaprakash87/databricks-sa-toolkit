@@ -45,6 +45,8 @@ jobs:
         run: python3 -m pytest tests/ -q
       - name: Validate skills via CLI
         run: sa-kit validate
+      - name: Scenario baseline report (exclusion precision/recall)
+        run: sa-kit scenario report
       - name: Installer dry run + install + uninstall roundtrip
         run: |
           mkdir /tmp/fake-repo

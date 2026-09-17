@@ -1,9 +1,12 @@
 """sa-kit command-line interface."""
 import argparse
 import sys
+from pathlib import Path
+
+import yaml
 
 from . import __version__
-from . import engagement, installer, registry
+from . import engagement, installer, registry, scoring
 
 
 def cmd_validate(args):
@@ -48,6 +51,58 @@ def cmd_install(args):
         return 1
 
 
+def _load_yaml(path):
+    return yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+
+
+def _print_metrics(name, m):
+    print(f"{name:32} sel_recall={m['selection_recall']:.2f} sel_precision={m['selection_precision']:.2f} "
+          f"exc_recall={m['exclusion_recall']:.2f} exc_precision={m['exclusion_precision']:.2f}")
+    for key in ("missed_selections", "missed_exclusions", "banned_selected", "required_excluded"):
+        if m[key]:
+            print(f"    {key}: {', '.join(m[key])}")
+
+
+def cmd_scenario_score(args):
+    expected = _load_yaml(Path(args.scenario) / "expected.yaml")
+    actual = _load_yaml(args.selection)
+    actual = actual.get("selection", actual)  # accept engagement.yaml or bare selection
+    m = scoring.score(expected, actual)
+    _print_metrics(Path(args.scenario).name, m)
+    return 0 if scoring.passed(m, args.floor) else 1
+
+
+def cmd_scenario_report(args):
+    root = Path(args.dir)
+    rows, failures, missing = [], 0, 0
+    for scen in sorted(p for p in root.iterdir() if p.is_dir()):
+        baseline = scen / "baseline.yaml"
+        if not baseline.is_file():
+            missing += 1
+            print(f"{scen.name:32} (no baseline.yaml — skipped)")
+            continue
+        expected = _load_yaml(scen / "expected.yaml")
+        actual = _load_yaml(baseline)
+        actual = actual.get("selection", actual)
+        m = scoring.score(expected, actual)
+        _print_metrics(scen.name, m)
+        rows.append(m)
+        if not scoring.passed(m, args.floor):
+            failures += 1
+    if not rows:
+        print("❌ no baselines found")
+        return 1
+    avg = {k: sum(r[k] for r in rows) / len(rows)
+           for k in ("selection_recall", "selection_precision", "exclusion_recall", "exclusion_precision")}
+    print(f"\n{len(rows)} scenarios scored ({missing} without baselines), floor={args.floor}")
+    print("averages: " + " ".join(f"{k}={v:.2f}" for k, v in avg.items()))
+    if failures:
+        print(f"❌ {failures} scenario(s) below floor")
+        return 1
+    print("✅ all scored scenarios at or above floor")
+    return 0
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="sa-kit", description="Databricks SA Dev Kit")
     parser.add_argument("--version", action="version", version=f"sa-kit {__version__}")
@@ -71,6 +126,18 @@ def main(argv=None):
     p_install.add_argument("--dry-run", action="store_true")
     p_install.add_argument("--uninstall", action="store_true", help="Remove a previous sa-kit install")
     p_install.set_defaults(func=cmd_install)
+
+    p_scen = sub.add_parser("scenario", help="Score selections against reference scenarios")
+    scen_sub = p_scen.add_subparsers(dest="scenario_command", required=True)
+    p_score = scen_sub.add_parser("score", help="Score one selection file against a scenario")
+    p_score.add_argument("--scenario", required=True, help="Scenario directory")
+    p_score.add_argument("--selection", required=True, help="engagement.yaml or selection file")
+    p_score.add_argument("--floor", type=float, default=1.0)
+    p_score.set_defaults(func=cmd_scenario_score)
+    p_report = scen_sub.add_parser("report", help="Score all scenario baselines; report precision/recall")
+    p_report.add_argument("--dir", default="scenarios")
+    p_report.add_argument("--floor", type=float, default=1.0)
+    p_report.set_defaults(func=cmd_scenario_report)
 
     args = parser.parse_args(argv)
     return args.func(args)

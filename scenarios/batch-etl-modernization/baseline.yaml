@@ -1,0 +1,32 @@
+scenario: batch-etl-modernization
+captured: '2026-09-17'
+method: initial capture from expected.yaml; regenerate via orchestrator agent runs
+selection:
+  selected:
+  - skill: business-problem-framing
+    reason: Frame batch-window overruns and month-end delay as measurable outcomes
+  - skill: solution-architecture
+    reason: Migration architecture, job orchestration, warehouse coexistence
+  - skill: data-source-assessment
+    reason: 400+ jobs' sources (file drops, JDBC) need inventory and fitness assessment
+  - skill: batch-data-engineering
+    reason: Nightly transformations are the core capability being modernized
+  - skill: governance-security
+    reason: Finance data needs lineage and access control in the new platform
+  - skill: observability-finops-performance
+    reason: Reliability, rerun elimination, and cost transparency are the stated KPIs
+  excluded:
+  - skill: data-integration-cdc
+    reason: Nightly latency retained; sources are batch file drops and extracts
+  - skill: streaming-realtime
+    reason: No latency change requested; batch window is the requirement
+  - skill: bi-semantic-analytics
+    reason: Consumers and reports unchanged; out of scope by explicit instruction
+  - skill: ml-predictive-optimization
+    reason: Explicitly out of scope ("don't gold-plate it")
+  - skill: genai-agents-rag
+    reason: Explicitly out of scope
+  - skill: operational-serving-apps
+    reason: No workflow-integration requirement; outputs feed the existing warehouse
+  - skill: data-sharing-cleanrooms
+    reason: No external collaboration

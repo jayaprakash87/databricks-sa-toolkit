@@ -1,0 +1,30 @@
+scenario: executive-kpi-copilot
+captured: '2026-09-17'
+method: initial capture from expected.yaml; regenerate via orchestrator agent runs
+selection:
+  selected:
+  - skill: business-problem-framing
+    reason: Frame the 2-3 day answer cycle as the decision latency problem
+  - skill: value-and-kpi-design
+    reason: KPI = executive question-to-answer time; baseline exists (2-3 days)
+  - skill: solution-architecture
+    reason: Conversational layer over existing gold tables; grounding boundaries
+  - skill: governance-security
+    reason: Answers must be traceable to governed tables; executive access control
+  - skill: genai-agents-rag
+    reason: Conversational BI (Genie) pattern over curated structured data is the core capability
+  - skill: demo-and-meeting-design
+    reason: Executive-facing proof with real board-style questions
+  excluded:
+  - skill: data-source-assessment
+    reason: Curated documented gold tables already exist and are trusted
+  - skill: data-integration-cdc
+    reason: Daily freshness explicitly accepted; existing pipelines sufficient
+  - skill: batch-data-engineering
+    reason: No new transformations; gold layer already serves the KPIs
+  - skill: streaming-realtime
+    reason: Board cadence decisions; daily data accepted
+  - skill: ml-predictive-optimization
+    reason: Explanatory analytical questions, not predictions
+  - skill: data-sharing-cleanrooms
+    reason: Internal use only

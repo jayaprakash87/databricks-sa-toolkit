@@ -7,7 +7,8 @@ Benchmark scenarios for skill-selection behavior. Each scenario is a synthetic c
 ```
 scenarios/<name>/
 ├── brief.md          # synthetic customer problem (input to the orchestrator)
-└── expected.yaml     # must_select / must_exclude with reasons, traps, artifacts
+├── expected.yaml     # must_select / must_exclude with reasons, traps, artifacts
+└── baseline.yaml     # captured selection scored in CI (exclusion precision/recall)
 ```
 
 ## Usage
@@ -18,7 +19,21 @@ Structural validation (runs in CI):
 python3 scripts/check_scenarios.py --summary
 ```
 
-Manual evaluation: give a `brief.md` to an agent with the toolkit installed and compare its orchestrator output to `expected.yaml`. Selection of any `must_exclude` skill without strong new justification is a regression. Automated proxy-LLM evaluation of these scenarios lands in Phase 2 (see docs/SA_DEV_KIT_ANALYSIS.md §16).
+Score baselines against expectations (runs in CI, blocking):
+
+```bash
+sa-kit scenario report                 # all baselines, floor 1.0
+sa-kit scenario score --scenario scenarios/bi-on-curated-delta --selection my-selection.yaml
+```
+
+Metrics: `exclusion_recall` (planted traps refused) and `exclusion_precision`
+(no required skill wrongly excluded), plus selection recall/precision.
+Skills listed under `conditional` — and skills unmentioned by `expected.yaml` —
+are neutral and never scored.
+
+Baselines were initially captured from `expected.yaml`; regenerate them from
+real orchestrator agent runs when skills change routing behavior, and review
+score deltas in the PR.
 
 ## Conventions
 

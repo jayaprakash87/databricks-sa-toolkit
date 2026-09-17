@@ -1,0 +1,32 @@
+scenario: pricing-optimization
+captured: '2026-09-17'
+method: initial capture from expected.yaml; regenerate via orchestrator agent runs
+selection:
+  selected:
+  - skill: business-problem-framing
+    reason: Markdown decision, weekly cadence, margin vs sell-through trade-off
+  - skill: value-and-kpi-design
+    reason: Finance demands measurable incremental margin vs current ladder
+  - skill: solution-architecture
+    reason: Optimization pipeline on existing curated data; integration into planning tool
+  - skill: ml-predictive-optimization
+    reason: Demand response modeling and markdown optimization are the core capability
+  - skill: operational-serving-apps
+    reason: Recommendations must land in the existing merchandising planning tool
+  - skill: experimentation-value-realization
+    reason: Prove incremental margin against the ladder before rollout (explicit requirement)
+  - skill: demo-and-meeting-design
+    reason: Win back trust after a failed prior AI project
+  excluded:
+  - skill: data-source-assessment
+    reason: Required inputs already consolidated in curated tables by existing ETL
+  - skill: data-integration-cdc
+    reason: Nightly data meets weekly decision cadence
+  - skill: streaming-realtime
+    reason: Weekly markdown decisions; no latency requirement
+  - skill: genai-agents-rag
+    reason: Numeric optimization problem; no language understanding involved
+  - skill: bi-semantic-analytics
+    reason: Explicitly no appetite for a new dashboard; output goes to planning tool
+  - skill: data-sharing-cleanrooms
+    reason: No external collaboration
