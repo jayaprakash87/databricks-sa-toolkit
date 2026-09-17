@@ -5,6 +5,35 @@ All notable changes to databricks-sa-toolkit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-09-17
+
+### Added - SA Dev Kit Phase 2 (executable methodology)
+
+* **Routing lint** (`sa_kit.routing`): deterministic selection rules — requires
+  closure, alternatives silence, forced-capability silence (CDC/streaming/ML/
+  GenAI must be decided, never unmentioned), weak justification/exclusion
+  reasons. Blocks `sa-kit validate --selection`.
+* **Exclusion precision/recall scoring** (`sa_kit.scoring`): `sa-kit scenario
+  score` and `sa-kit scenario report`; per-scenario `baseline.yaml` scored in
+  CI on every PR (Phase 2 exit criterion). Conditional/unmentioned skills are
+  neutral.
+* **Full 16-scenario suite**: 7 new scenarios (predictive-availability,
+  sap-integration, customer-360, regulatory-sharing, operational-app,
+  ml-scoring-existing-stack, fabric-powerbi-interop).
+* **Artifact engine** (`sa_kit.artifacts`): templates declare `requires_state`
+  input contracts; `sa-kit artifact generate <template> --engagement F
+  [--check-inputs]`; deterministic `<!-- state: path -->` rendering; new
+  `exclusion_register` template; DRAFT-CONFIDENTIAL banner.
+* **Contributor scaffolding**: `sa-kit skill create`, `sa-kit scenario create`.
+* Unit test suite (`tests/`, 17 tests) run in CI.
+
+### Deferred
+
+* LLM WITH/WITHOUT skill-efficacy evaluation (analysis §16) — scheduled,
+  non-blocking design; requires model API access.
+* Deep-skill content expansion (04/05/07/16) — now safe under regression
+  protection.
+
 ## [2.4.0] - 2026-09-17
 
 ### Added - SA Dev Kit Phase 1 (distribution & state)

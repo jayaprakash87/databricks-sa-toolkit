@@ -2,7 +2,7 @@
 
 Reusable **Databricks Solution Architect toolkit** for customer discovery, solution design, demos, value engineering, architecture, and production-readiness work.
 
-**Version:** 2.4.0  
+**Version:** 2.5.0  
 **Design:** use-case-first, capability-composed, Databricks-aware.
 
 ## Philosophy
@@ -112,7 +112,28 @@ sa-kit engagement init acme-churn
 sa-kit validate --selection engagements/acme-churn/engagement.yaml
 ```
 Selections must name valid skills and include explicit exclusions with reasons.
+A deterministic routing lint additionally blocks silent trade-offs: commonly
+forced capabilities (CDC, streaming, ML, GenAI) and `alternatives` siblings
+must be recorded as selected or excluded — never unmentioned.
 `engagements/` is gitignored — it may contain customer context.
+
+**Generate artifacts from engagement state:**
+```bash
+sa-kit artifact generate exclusion_register --engagement engagements/acme-churn/engagement.yaml
+sa-kit artifact generate solution_blueprint --engagement ... --check-inputs
+```
+
+**Score selections against reference scenarios:**
+```bash
+sa-kit scenario report        # all baselines: exclusion precision/recall (CI-blocking)
+sa-kit scenario score --scenario scenarios/bi-on-curated-delta --selection my.yaml
+```
+
+**Contribute:**
+```bash
+sa-kit skill create my-skill --id 19 --category operations
+sa-kit scenario create my-scenario
+```
 
 **Validate the repository:**
 ```bash
