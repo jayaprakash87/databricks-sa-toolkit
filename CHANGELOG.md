@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **Documentation rewritten for adoption**: README restructured around persona,
   value proposition, installation, and a first-engagement walkthrough with a
   CLI reference; CONTRIBUTING/INSTALL/RELEASE aligned to the consolidated CLI.
+* **Analysis condensed to roadmap**: the 586-line SA Dev Kit analysis (Phases 0–2
+  now executed) is replaced by `docs/ROADMAP.md` covering Phase 3/4 and deferred items.
 
 ### Removed
 

@@ -177,6 +177,7 @@ databricks-sa-toolkit/
 | [AGENTS.md](AGENTS.md) | Behavioral rules for agents working in this repo |
 | [SKILL_SELECTION_MATRIX.md](SKILL_SELECTION_MATRIX.md) | Generated skill routing table |
 | [docs/SKILL_AUTHORING.md](docs/SKILL_AUTHORING.md) | Standard for writing skills |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | What's next (evidence tooling, scale & team) and deferred items |
 | [docs/INSTALL_DATABRICKS.md](docs/INSTALL_DATABRICKS.md) | Databricks workspace installation |
 | [docs/PROMOTION.md](docs/PROMOTION.md) | Workspace promotion safety model |
 | [docs/RELEASE.md](docs/RELEASE.md) | Release process |
