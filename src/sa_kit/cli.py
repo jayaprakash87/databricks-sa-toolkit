@@ -3,10 +3,12 @@ import argparse
 import sys
 
 from . import __version__
-from . import installer, registry
+from . import engagement, installer, registry
 
 
 def cmd_validate(args):
+    if args.selection:
+        return engagement.validate_selection(args.selection)
     try:
         skills = registry.load_skills()
     except FileNotFoundError as exc:
@@ -52,7 +54,15 @@ def main(argv=None):
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_validate = sub.add_parser("validate", help="Validate skill frontmatter and dependency graph")
+    p_validate.add_argument("--selection", help="Validate an engagement.yaml skill selection instead")
     p_validate.set_defaults(func=cmd_validate)
+
+    p_eng = sub.add_parser("engagement", help="Manage engagement state")
+    eng_sub = p_eng.add_subparsers(dest="engagement_command", required=True)
+    p_init = eng_sub.add_parser("init", help="Create engagements/<name>/engagement.yaml")
+    p_init.add_argument("name")
+    p_init.add_argument("--dir", default="engagements", help="Base directory (default: engagements)")
+    p_init.set_defaults(func=lambda a: engagement.init(a.name, a.dir))
 
     p_install = sub.add_parser("install", help="Install skills into an agent's skill directory")
     p_install.add_argument("--agent", required=True, choices=sorted(installer.ADAPTERS))

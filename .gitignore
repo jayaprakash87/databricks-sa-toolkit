@@ -1,6 +1,9 @@
 # Databricks workspace sync metadata
 .databricks_sync
 
+# Engagement state may contain customer context — never commit
+engagements/
+
 # Python
 __pycache__/
 *.py[cod]
