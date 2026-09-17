@@ -19,6 +19,8 @@ jobs:
         run: python3 scripts/validate_toolkit.py
       - name: Check selection matrix freshness
         run: python3 scripts/generate_matrix.py --check
+      - name: Validate reference scenarios
+        run: python3 scripts/check_scenarios.py --summary
 
   security:
     runs-on: ubuntu-latest

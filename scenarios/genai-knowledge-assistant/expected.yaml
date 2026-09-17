@@ -1,0 +1,51 @@
+scenario: genai-knowledge-assistant
+description: >
+  GenAI done right: RAG over documents with governance, freshness, evaluation,
+  and operational delivery. Tests that structured-data skills (CDC, batch, BI, ML)
+  stay out of a document problem.
+must_select:
+  - skill: business-problem-framing
+    reason: 40-minute resolution and compliance risk are the measurable problem
+  - skill: value-and-kpi-design
+    reason: KPI = resolution time and answer accuracy; baseline exists
+  - skill: solution-architecture
+    reason: Document pipeline, retrieval, serving, and mobile delivery boundaries
+  - skill: data-source-assessment
+    reason: SharePoint PDF corpus, revision cadence, and restricted bulletins need assessment
+  - skill: governance-security
+    reason: Contract-restricted bulletins and superseded-version exclusion are governance requirements
+  - skill: genai-agents-rag
+    reason: RAG with citations over unstructured documents is the core capability
+  - skill: operational-serving-apps
+    reason: Mobile delivery into technicians' working context
+  - skill: experimentation-value-realization
+    reason: Answer quality and resolution-time lift must be proven before rollout
+  - skill: demo-data-synthetic-assets
+    reason: Real customer bulletins cannot be used in demos; synthetic corpus required
+  - skill: demo-and-meeting-design
+    reason: Field-credible demo for the service organization
+must_exclude:
+  - skill: data-integration-cdc
+    reason: No operational database; monthly document revisions are not CDC
+  - skill: batch-data-engineering
+    reason: No structured transformation workloads; document ingestion lives inside the RAG pattern
+  - skill: streaming-realtime
+    reason: Monthly document updates; no event latency requirement
+  - skill: bi-semantic-analytics
+    reason: No metrics/dashboard requirement; knowledge is unstructured
+  - skill: ml-predictive-optimization
+    reason: No prediction; retrieval + synthesis problem
+  - skill: data-sharing-cleanrooms
+    reason: Internal knowledge delivery, not cross-org data collaboration
+traps:
+  - modeling documents into medallion tables because "everything needs bronze/silver/gold"
+  - skipping evaluation despite safety-answer compliance risk
+  - skipping access control on contract-restricted bulletins
+architecture_characteristics:
+  - document parsing/chunking/indexing with version supersession
+  - grounded answers with citations, permission-filtered retrieval
+  - evaluation dataset with safety-critical questions
+expected_artifacts:
+  - solution blueprint
+  - demo plan
+  - evaluation approach

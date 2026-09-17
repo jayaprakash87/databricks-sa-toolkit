@@ -1,0 +1,43 @@
+scenario: retail-media-cleanroom
+description: >
+  Sharing/clean-room-centric with governance and value measurement. Tests that
+  ingestion, streaming, ML, and GenAI stay excluded when collaboration is the capability.
+must_select:
+  - skill: business-problem-framing
+    reason: Incremental-sales measurement offering is the business product
+  - skill: value-and-kpi-design
+    reason: Measurement methodology and media revenue KPI need definition
+  - skill: solution-architecture
+    reason: Clean-room topology, party boundaries, and audit surfaces
+  - skill: governance-security
+    reason: Row-level isolation, auditability, and revocation are contractual requirements
+  - skill: data-sharing-cleanrooms
+    reason: Privacy-preserving cross-org join without raw data exchange is the core capability
+  - skill: bi-semantic-analytics
+    reason: Aggregate campaign measurement outputs for brand consumption
+  - skill: experimentation-value-realization
+    reason: Incrementality (test vs control) is the measurement product itself
+must_exclude:
+  - skill: data-source-assessment
+    reason: Loyalty data already curated and governed; brand data stays with the brand
+  - skill: data-integration-cdc
+    reason: Weekly campaign cadence on existing curated data; no new integration
+  - skill: batch-data-engineering
+    reason: Curated inputs exist; clean-room computation is not a new ETL estate
+  - skill: streaming-realtime
+    reason: Weekly measurement cadence
+  - skill: ml-predictive-optimization
+    reason: Incrementality measurement is experimental design, not predictive modeling
+  - skill: genai-agents-rag
+    reason: No language understanding requirement
+traps:
+  - centralizing both parties' raw data instead of clean-room collaboration
+  - proposing uplift ML models when contractual incrementality methodology is required
+architecture_characteristics:
+  - clean room with aggregate-only outputs and approved computations
+  - audit log of computations; per-brand revocation
+  - existing curated loyalty data as grocer-side input
+expected_artifacts:
+  - solution blueprint
+  - governance/audit model
+  - value hypothesis

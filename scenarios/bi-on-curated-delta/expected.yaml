@@ -1,0 +1,41 @@
+scenario: bi-on-curated-delta
+description: >
+  The canonical over-engineering trap: curated governed data already exists and the
+  need is metric standardization + dashboards. Nothing else is justified.
+must_select:
+  - skill: business-problem-framing
+    reason: Turn "conflicting Excel reports" into a decision/KPI problem statement
+  - skill: value-and-kpi-design
+    reason: Agreed metric definitions ARE the deliverable; KPI baseline is report conflict/time wasted
+  - skill: solution-architecture
+    reason: Minimal architecture on existing curated tables; semantic layer placement decision
+  - skill: bi-semantic-analytics
+    reason: Governed metrics, semantic definitions, dashboards for weekly trading meetings
+  - skill: demo-and-meeting-design
+    reason: Prove the single-source-of-truth experience to sales managers
+must_exclude:
+  - skill: data-source-assessment
+    reason: Curated, documented, trusted UC tables already exist at required freshness
+  - skill: data-integration-cdc
+    reason: No new sources; nightly refresh already meets the weekly decision cadence
+  - skill: batch-data-engineering
+    reason: Existing jobs already produce the curated layer; no new transformation need
+  - skill: streaming-realtime
+    reason: Weekly decisions; no latency requirement
+  - skill: ml-predictive-optimization
+    reason: Analytical questions only; no prediction requested or needed
+  - skill: genai-agents-rag
+    reason: The chatbot ask is feature-first; standardized dashboards solve the stated problem
+  - skill: data-sharing-cleanrooms
+    reason: No cross-org collaboration
+traps:
+  - forced medallion (curated tables already exist)
+  - forced ingestion
+  - GenAI chatbot upsell explicitly planted in the brief
+architecture_characteristics:
+  - reuse existing curated UC tables as-is
+  - semantic/metric layer over existing data
+  - no new pipelines
+expected_artifacts:
+  - solution blueprint
+  - demo plan

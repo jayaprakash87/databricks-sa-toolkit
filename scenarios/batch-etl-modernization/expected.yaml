@@ -1,0 +1,45 @@
+scenario: batch-etl-modernization
+description: >
+  Boring-is-correct. A pure batch migration with reliability and cost goals.
+  Tests that serving-layer and AI skills stay out when the scope is plumbing.
+must_select:
+  - skill: business-problem-framing
+    reason: Frame batch-window overruns and month-end delay as measurable outcomes
+  - skill: solution-architecture
+    reason: Migration architecture, job orchestration, warehouse coexistence
+  - skill: data-source-assessment
+    reason: 400+ jobs' sources (file drops, JDBC) need inventory and fitness assessment
+  - skill: batch-data-engineering
+    reason: Nightly transformations are the core capability being modernized
+  - skill: governance-security
+    reason: Finance data needs lineage and access control in the new platform
+  - skill: observability-finops-performance
+    reason: Reliability, rerun elimination, and cost transparency are the stated KPIs
+must_exclude:
+  - skill: data-integration-cdc
+    reason: Nightly latency retained; sources are batch file drops and extracts
+  - skill: streaming-realtime
+    reason: No latency change requested; batch window is the requirement
+  - skill: bi-semantic-analytics
+    reason: Consumers and reports unchanged; out of scope by explicit instruction
+  - skill: ml-predictive-optimization
+    reason: Explicitly out of scope ("don't gold-plate it")
+  - skill: genai-agents-rag
+    reason: Explicitly out of scope
+  - skill: operational-serving-apps
+    reason: No workflow-integration requirement; outputs feed the existing warehouse
+  - skill: data-sharing-cleanrooms
+    reason: No external collaboration
+conditional:
+  - skill: platform-interoperability
+    reason: Warehouse coexistence pattern if the finance warehouse remains system of consumption long-term
+traps:
+  - adding dashboards/ML/GenAI to a migration with explicit anti-scope-creep instruction
+  - converting nightly batch to streaming because the platform supports it
+architecture_characteristics:
+  - like-for-like nightly batch on Databricks jobs/pipelines
+  - lineage and cost observability from day one
+  - unchanged consumer contract with finance warehouse
+expected_artifacts:
+  - solution blueprint
+  - migration/architecture decision record

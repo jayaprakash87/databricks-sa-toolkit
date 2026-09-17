@@ -1,0 +1,46 @@
+scenario: executive-kpi-copilot
+description: >
+  GenAI is justified (natural-language Q&A over governed tables) but ingestion,
+  streaming, and ML are not. Tests that GenAI selection does not drag data
+  engineering along with it.
+must_select:
+  - skill: business-problem-framing
+    reason: Frame the 2-3 day answer cycle as the decision latency problem
+  - skill: value-and-kpi-design
+    reason: KPI = executive question-to-answer time; baseline exists (2-3 days)
+  - skill: solution-architecture
+    reason: Conversational layer over existing gold tables; grounding boundaries
+  - skill: governance-security
+    reason: Answers must be traceable to governed tables; executive access control
+  - skill: genai-agents-rag
+    reason: Conversational BI (Genie) pattern over curated structured data is the core capability
+  - skill: demo-and-meeting-design
+    reason: Executive-facing proof with real board-style questions
+must_exclude:
+  - skill: data-source-assessment
+    reason: Curated documented gold tables already exist and are trusted
+  - skill: data-integration-cdc
+    reason: Daily freshness explicitly accepted; existing pipelines sufficient
+  - skill: batch-data-engineering
+    reason: No new transformations; gold layer already serves the KPIs
+  - skill: streaming-realtime
+    reason: Board cadence decisions; daily data accepted
+  - skill: ml-predictive-optimization
+    reason: Explanatory analytical questions, not predictions
+  - skill: data-sharing-cleanrooms
+    reason: Internal use only
+conditional:
+  - skill: platform-interoperability
+    reason: Only if the copilot must surface inside existing Power BI/Teams surfaces
+traps:
+  - rebuilding ingestion for data that is already governed
+  - proposing RAG over documents when the knowledge is structured tables (Genie fits)
+  - adding forecasting nobody asked for
+architecture_characteristics:
+  - Genie/conversational BI over existing gold tables
+  - grounded answers with citation to governed tables
+  - no new data movement
+expected_artifacts:
+  - solution blueprint
+  - demo plan
+  - KPI tree

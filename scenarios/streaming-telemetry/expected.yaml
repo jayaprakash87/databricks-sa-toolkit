@@ -1,0 +1,46 @@
+scenario: streaming-telemetry
+description: >
+  Genuine streaming justification (decision value decays in minutes) with
+  rule-based detection. Tests that ML is not forced onto working rules and
+  GenAI stays out entirely.
+must_select:
+  - skill: business-problem-framing
+    reason: 50-minute detection lag vs 2-minute target is the measurable problem
+  - skill: value-and-kpi-design
+    reason: KPI = detection-to-dispatch time and charger availability
+  - skill: solution-architecture
+    reason: Kafka consumption, stream processing, dual serving (ops + consumer app)
+  - skill: data-source-assessment
+    reason: Kafka topics, event schemas, and ownership need assessment
+  - skill: streaming-realtime
+    reason: 2-minute detection where value decays with time — definitive streaming case
+  - skill: governance-security
+    reason: Payment events contain PII entering the platform
+  - skill: operational-serving-apps
+    reason: Dispatch workflow and consumer-app status feed are operational outputs
+  - skill: observability-finops-performance
+    reason: 24/7 streaming SLA needs monitoring and cost control
+must_exclude:
+  - skill: ml-predictive-optimization
+    reason: Ops team's threshold/state rules are known and sufficient; no prediction requested
+  - skill: genai-agents-rag
+    reason: No language understanding requirement
+  - skill: bi-semantic-analytics
+    reason: Outputs are operational actions and app status, not dashboards
+  - skill: data-integration-cdc
+    reason: Sources are Kafka events, not operational database change capture
+  - skill: data-sharing-cleanrooms
+    reason: No cross-org data collaboration
+conditional:
+  - skill: platform-interoperability
+    reason: Kafka estate is owned by another team; boundary definition may need this skill
+traps:
+  - proposing predictive-failure ML when rules are explicitly sufficient
+  - adding a monitoring dashboard as primary deliverable instead of dispatch integration
+architecture_characteristics:
+  - streaming consumption from existing Kafka (no re-ingestion of history)
+  - rule-based detection with 2-minute end-to-end SLA
+  - PII isolation for payment events
+expected_artifacts:
+  - solution blueprint
+  - architecture decision record (streaming pattern + SLA)

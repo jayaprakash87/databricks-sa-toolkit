@@ -1,0 +1,42 @@
+scenario: snowflake-coexistence
+description: >
+  Databricks-aware, not Databricks-forced. Tests that the toolkit designs
+  coexistence and boundaries instead of migration, and refuses duplicate pipelines.
+must_select:
+  - skill: business-problem-framing
+    reason: Frame churn-model enablement, not platform preference, as the outcome
+  - skill: solution-architecture
+    reason: Ownership boundaries, data flow direction, and score publication path
+  - skill: platform-interoperability
+    reason: Snowflake-Databricks coexistence is the core capability requested
+  - skill: governance-security
+    reason: One consistent PII access-control story across both platforms
+must_exclude:
+  - skill: data-integration-cdc
+    reason: CTO explicitly forbids duplicate pipelines; access, not replication
+  - skill: batch-data-engineering
+    reason: Curated subscriber tables already exist in Snowflake; no rebuild
+  - skill: streaming-realtime
+    reason: No latency requirement stated; churn workflow is batch-cadence
+  - skill: genai-agents-rag
+    reason: No language understanding requirement
+  - skill: bi-semantic-analytics
+    reason: Reporting stays in Snowflake with the analytics engineering team
+  - skill: data-sharing-cleanrooms
+    reason: Intra-company platform interop, not cross-org collaboration
+conditional:
+  - skill: ml-predictive-optimization
+    reason: Churn modeling exists but may already be owned by the DS team; select only if model design is in scope
+  - skill: operational-serving-apps
+    reason: Only if scores must flow into operational systems beyond analyst tables
+traps:
+  - proposing migration off Snowflake ("platform war" explicitly forbidden)
+  - replicating subscriber data into Databricks instead of federated/shared access
+  - rebuilding curated pipelines that already work
+architecture_characteristics:
+  - federated or shared access to Snowflake curated tables (no bulk copy)
+  - score write-back with clear ownership boundary
+  - unified governance story for subscriber PII
+expected_artifacts:
+  - architecture decision record (access pattern choice)
+  - solution blueprint

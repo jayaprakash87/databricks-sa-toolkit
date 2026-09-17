@@ -1,0 +1,45 @@
+scenario: supply-chain-cdc
+description: >
+  Data-integration-heavy and AI-free. CDC is genuinely justified (15-minute
+  freshness, no source query load). Tests that ML/GenAI stay out of a plumbing
+  problem and that existing Power BI is respected.
+must_select:
+  - skill: business-problem-framing
+    reason: Allocation-conflict decision, freshness KPI (hours late -> 15 min)
+  - skill: solution-architecture
+    reason: CDC replication path, serving layer, Power BI coexistence boundaries
+  - skill: data-source-assessment
+    reason: Two operational databases; change semantics, keys, and load constraints must be assessed
+  - skill: data-integration-cdc
+    reason: Sub-hour freshness from operational DBs that cannot take query load — the definitive CDC case
+  - skill: governance-security
+    reason: Customer names and order values replicated into the lakehouse need access control
+  - skill: platform-interoperability
+    reason: Planners keep Power BI; Databricks serves it rather than replacing it
+  - skill: observability-finops-performance
+    reason: Continuous replication is production infrastructure; freshness SLA needs monitoring
+must_exclude:
+  - skill: ml-predictive-optimization
+    reason: Pain is stale data, not prediction; nobody asked and no decision needs it
+  - skill: genai-agents-rag
+    reason: No language understanding requirement anywhere in the workflow
+  - skill: data-sharing-cleanrooms
+    reason: Internal visibility only
+  - skill: demo-data-synthetic-assets
+    reason: Real operational data exists; synthetic data adds nothing
+conditional:
+  - skill: streaming-realtime
+    reason: Only if conflict detection needs event-driven alerts beyond 15-minute table freshness
+  - skill: bi-semantic-analytics
+    reason: Only for governed conflict metrics; existing Power BI may cover consumption entirely
+traps:
+  - proposing predictive stock-out ML on top of a freshness problem
+  - replacing the Power BI estate instead of coexisting with it
+  - defaulting to full medallion re-modeling when the need is replication + serving
+architecture_characteristics:
+  - CDC replication from two SQL Server sources
+  - 15-minute freshness SLA with monitoring
+  - serving into existing Power BI
+expected_artifacts:
+  - solution blueprint
+  - architecture decision record (CDC pattern choice)
